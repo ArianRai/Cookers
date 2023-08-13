@@ -17,7 +17,7 @@ We will be using Edamam's Recipe Search API - https://developer.edamam.com/edama
 | GET         | `/auth/signup `                                 | sign up form render         |      |
 | POST        | `/auth/signup `                                 | sign up form handler        |      |
 | GET         | `/auth/login`                                   | log in form render          |      |
-| POST        | `/auth/login                                    | log in form handler         |      |
+| POST        | `/auth/login`                                   | log in form handler         |      |
 | POST        | `/auth/logout`                                  | log out user                |      |
 | GET         | `/user/{user_id}/details`                       | user account                |      |
 | GET         | `/user/{user_id}/edit`                          | user account form render    |      |

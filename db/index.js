@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const MONGO_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pruebitas-proj'
+const MONGO_URI = process.env.MONGODB_URI || 'mongodb+srv://cdelgadoes:carlosdm@cluster0.f2fpksz.mongodb.net/'
 
 mongoose
 	.connect(MONGO_URI)

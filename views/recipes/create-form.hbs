@@ -1,0 +1,56 @@
+<div class="container">
+
+	<div class="row justify-content-center">
+
+		<div class="col-md-6">
+
+			<h1>Create new recipe</h1>
+			<hr>
+
+			<form action="/recipe/create" method="POST">
+				<div class="mb-3">
+					<label for="nameInput" class="form-label">Recipe name</label>
+					<input type="email" class="form-control" id="nameInput" name="name">
+				</div>
+
+				<div class="mb-3">
+					<label for="imgInput" class="form-label">Image</label>
+					<input type="password" class="form-control" id="imgInput" name="image">
+				</div>
+				<div class="col">
+					<label for="--" class="form-label">Ingredients</label>
+					<select size="1" class="form-select" id="--" name="--">
+						<option value="">Measure</option>
+						{{#each measureTypes}}
+						<option value="{{measureTypes}}">{{this}}</option>
+						{{/each}}
+					</select>
+				</div>
+				<label>First name</label>
+				<input name="people[1][first_name]">
+
+				<label>Last name</label>
+				<input name="people[1][last_name]">
+
+				<label>Email</label>
+				<input name="people[1][email]">
+
+				Person 2:
+				<label>First name</label>
+				<input name="people[2][first_name]">
+
+				<label>Last name</label>
+				<input name="people[2][last_name]">
+
+				<label>Email</label>
+				<input name="people[2][email]">
+
+				<div class="d-grid gap-2">
+
+				</div>
+				<input type="submit" value="AAA">
+			</form>
+		</div>
+	</div>
+
+</div>

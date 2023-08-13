@@ -14,7 +14,7 @@ router.post('/signup', (req, res, next) => {
 		.then(salt => bcrypt.hash(plainPassword, salt))
 		.then(hashedPassword =>
 			// User.create({ username, email, password: hashedPassword, role, avatar })
-			User.create({ username, email, password: hashedPassword, role: undefined })
+			User.create({ username, email, password: hashedPassword })
 		)
 		.then(() => res.redirect('/'))
 		.catch(error => next(error))
@@ -22,8 +22,7 @@ router.post('/signup', (req, res, next) => {
 
 router.get('/login', (req, res, next) => {
 	const { err: errorMessage } = req.query
-	res.render('auth/login', { errorMessage })
-	res.render('/auth/login-form')
+	res.render('auth/login-form', { errorMessage })
 })
 router.post('/login', (req, res, next) => {
 	const { email, plainPassword } = req.body

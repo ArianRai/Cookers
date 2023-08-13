@@ -31,6 +31,6 @@ We will be using Edamam's Recipe Search API - https://developer.edamam.com/edama
 | GET         | `/recipe/{recipe_id}/edit`                      | Recipe edition form render  |      |
 | POST        | `/recipe/{recipe_id}/edit`                      | Recipe edition form handler |      |
 | POST        | `/recipe/{recipe_id}/delete`                    | Recipe delete               |      |
-| GET         | `/recipe/{recipe_id}/review/create`             | New review form render      |      |
-| POST        | `/recipe/{recipe_id}/review/create`             | New review form handler     |      |
-| POST        | `/recipe/{recipe_id}/review/{review_id}/delete` | Delete review               |      |
+| GET         | `review/create`                                 | New review form render      |      |
+| POST        | `/review/create`                                | New review form handler     |      |
+| POST        | `/review/{review_id}/delete`                    | Delete review               |      |

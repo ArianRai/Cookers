@@ -13,7 +13,7 @@ We will be using Edamam's Recipe Search API - https://developer.edamam.com/edama
 
 | HTTP Method | URI Path                                      | Description                 | JSON |
 | ----------- | --------------------------------------------- | --------------------------- | :--: |
-| GET         | /                                             | index                       |      |
+| GET         | `/`                                           | index                       |      |
 | GET         | /auth/signup                                  | sign up form render         |      |
 | POST        | /auth/signup                                  | sign up form handler        |      |
 | GET         | /auth/login                                   | log in form render          |      |

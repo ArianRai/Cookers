@@ -1,3 +1,12 @@
+# Project: Carlos & Arian
+
+## Description
+
+Development of a website where you can find and save your favorites food recipes, see other's favorites and if you register as chef you can create your own recipes and share with others
+
+
+
+
 | HTTP Method | URI Path                                      | Description                 | JSON |
 | ----------- | --------------------------------------------- | --------------------------- | :--: |
 | GET         | /                                             | index                       |      |

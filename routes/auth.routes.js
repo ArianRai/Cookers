@@ -6,13 +6,15 @@ const saltRounds = 10
 
 router.get('/signup', (req, res, next) => res.render('auth/signup-form'))
 router.post('/signup', (req, res, next) => {
-	const { username, email, plainPassword, role, avatar } = req.body
+	// const { username, email, plainPassword, role, avatar } = req.body
+	const { username, email, plainPassword } = req.body
 
 	bcrypt
 		.genSalt(saltRounds)
 		.then(salt => bcrypt.hash(plainPassword, salt))
 		.then(hashedPassword =>
-			User.create({ username, email, password: hashedPassword, role, avatar })
+			// User.create({ username, email, password: hashedPassword, role, avatar })
+			User.create({ username, email, password: hashedPassword, role: undefined })
 		)
 		.then(() => res.redirect('/'))
 		.catch(error => next(error))
@@ -37,7 +39,7 @@ router.post('/login', (req, res, next) => {
 				res.render('auth/login', { errorMessage: 'Incorrect password' })
 				return
 			} else {
-				// req.session.currentUser = user
+				req.session.currentUser = user
 				res.redirect('/')
 			}
 		})

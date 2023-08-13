@@ -2,19 +2,22 @@ const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const User = require('../models/User.model')
 
+const fileUploader = require('../config/cloudinary.config');
+
 const saltRounds = 10
 
 router.get('/signup', (req, res, next) => res.render('auth/signup-form'))
-router.post('/signup', (req, res, next) => {
+router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
 	// const { username, email, plainPassword, role, avatar } = req.body
 	const { username, email, plainPassword } = req.body
+	const { path: avatar } = req.file
 
 	bcrypt
 		.genSalt(saltRounds)
 		.then(salt => bcrypt.hash(plainPassword, salt))
 		.then(hashedPassword =>
 			// User.create({ username, email, password: hashedPassword, role, avatar })
-			User.create({ username, email, password: hashedPassword })
+			User.create({ username, email, password: hashedPassword, avatar})
 		)
 		.then(() => res.redirect('/'))
 		.catch(error => next(error))

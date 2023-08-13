@@ -4,7 +4,11 @@
 
 Development of a website where you can find and save your favorites food recipes, see other's favorites and if you register as chef you can create your own recipes and share with others
 
+## API
 
+We will be using Edamam's Recipe Search API - https://developer.edamam.com/edamam-recipe-api
+
+## Edpoints table
 
 
 | HTTP Method | URI Path                                      | Description                 | JSON |

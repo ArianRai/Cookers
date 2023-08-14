@@ -25,7 +25,7 @@ const userSchema = new Schema(
 		},
 		avatar: {
 			type: String,
-			default: 'AVATARPORDEFECTO',
+			default: 'https://res.cloudinary.com/dwuetntc4/image/upload/v1691939771/avatar/yq3rrcwin0jxhg7g8fue.png',
 		},
 		favoritesFromChefs: [
 			{

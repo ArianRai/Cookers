@@ -7,10 +7,16 @@ const fileUploader = require('../config/cloudinary.config');
 const saltRounds = 10
 
 router.get('/signup', (req, res, next) => res.render('auth/signup-form'))
+
 router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
 	// const { username, email, plainPassword, role, avatar } = req.body
 	const { username, email, plainPassword } = req.body
-	const { path: avatar } = req.file
+	// const { path: avatar } = req.file
+
+	let avatar = undefined
+    if (req.file !== undefined) {
+        avatar = req.file
+    }
 
 	bcrypt
 		.genSalt(saltRounds)

@@ -9,23 +9,34 @@
 
         <div class="col-md-3 mb-3">
             <figure class="user-card ">
-                <img src="{{avatar}}" alt="{{username}}">
-                <figcaption>{{username}}, {{email}}</figcaption>
+                <img src="{{user.avatar}}" alt="{{user.username}}">
+                <figcaption>{{user.username}}, {{user.email}}</figcaption>
             </figure>
             {{!-- <p><a href="/user/{{_id}}/details">Details</a></p> --}}
         </div>
         <div class="col-md-3 mb-3">
-            <p>{{username}}</p>
+            <p>{{user.username}}</p>
+            <p>Role: {{user.role}}</p>
            <p>Aki va los favoritos del Usuario</p> 
 
-        
-            <!-- DELETE USER -->
-            <form action="/user/{{_id}}/delete" method="POST">
-            <button type="submit" class="btn btn-danger">Delete user</button>
-            </form>
+            {{#if userRoles.isAdmin}}
+                <!-- DELETE USER -->
+                <form action="/user/{{user._id}}/delete" method="POST">
+                <button type="submit" class="btn btn-danger">Delete user</button>
+                </form>
 
-
-            <button type="button" class="btn btn-secondary">Edit Role</button>
+                <!-- EDIT ROL USER-->
+                {{#if userToEditRoles.isChef}}
+                <form action="/user/{{user._id}}/edit/USER" method="POST">
+                <input type="submit" class="btn btn-secondary" name="checkRole" value="Make User">
+                </form>
+                {{/if}}            
+                {{#if userToEditRoles.isUser}}
+                <form action="/user/{{user._id}}/edit/CHEF" method="POST">
+                <input type="submit" class="btn btn-secondary" name="checkRole" value="Make Chef">
+                </form>
+                {{/if}}      
+            {{/if}}
 
             
         </div>

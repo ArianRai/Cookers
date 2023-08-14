@@ -1,0 +1,35 @@
+<div class="container">
+
+    <h3>{{username}} Details</h3>
+
+    <hr>
+
+    <div class="row">
+       
+
+        <div class="col-md-3 mb-3">
+            <figure class="user-card ">
+                <img src="{{avatar}}" alt="{{username}}">
+                <figcaption>{{username}}, {{email}}</figcaption>
+            </figure>
+            {{!-- <p><a href="/user/{{_id}}/details">Details</a></p> --}}
+        </div>
+        <div class="col-md-3 mb-3">
+            <p>{{username}}</p>
+           <p>Aki va los favoritos del Usuario</p> 
+
+        
+            <!-- DELETE USER -->
+            <form action="/user/{{_id}}/delete" method="POST">
+            <button type="submit" class="btn btn-danger">Delete user</button>
+            </form>
+
+
+            <button type="button" class="btn btn-secondary">Edit Role</button>
+
+            
+        </div>
+
+       
+    </div>
+</div>

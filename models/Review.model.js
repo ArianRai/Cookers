@@ -9,11 +9,11 @@ const reviewSchema = new Schema(
 			type: String,
 		},
 		recipeID: {
-			type: [Schema.Types.ObjectId],
+			type: Schema.Types.ObjectId,
 			ref: 'Recipe',
 		},
 		owner: {
-			type: [Schema.Types.ObjectId],
+			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
 	},

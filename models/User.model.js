@@ -27,13 +27,17 @@ const userSchema = new Schema(
 			type: String,
 			default: 'AVATARPORDEFECTO',
 		},
-		favoritesFromChefs: {
-			type: [Schema.Types.ObjectId],
-			ref: 'Recipe',
-		},
-		favoritesFromAPI: {
-			type: [String],
-		},
+		favoritesFromChefs: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'Recipe',
+			},
+		],
+		favoritesFromAPI: [
+			{
+				type: String,
+			},
+		],
 	},
 	{
 		timestamps: true,

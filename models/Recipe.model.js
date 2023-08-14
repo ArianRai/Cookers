@@ -7,7 +7,7 @@ const recipeSchema = new Schema(
 			trim: true,
 			unique: true,
 		},
-		image: { type: String },
+		image: { type: String, default: 'RECETAIMGPORDEFECTO' },
 		ingredientsLines: [String],
 		ingredients: [
 			{

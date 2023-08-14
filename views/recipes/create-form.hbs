@@ -20,16 +20,17 @@
 				<div class="content">
 					<div class="row" id="ingredient-group">
 						<div class="mb-3 col-4">
-							<label for="imgInput" class="form-label">Ingredient</label>
-							<input type="text" class="form-control" id="imgInput" name="food">
+							<label for="ingredientInput" class="form-label">Ingredient</label>
+							<input type="text" class="form-control" id="ingredientInput" name="food">
 						</div>
 						<div class="mb-3 col-4">
-							<label for="imgInput" class="form-label">Quantity</label>
-							<input type="number" class="form-control" id="imgInput" name="quantity">
+							<label for="quantityInput" class="form-label">Quantity</label>
+							<input type="number" step="0.25" min="0" class="form-control" id="quantityInput"
+								name="quantity">
 						</div>
 						<div class="col">
-							<label for="--" class="form-label">Measure</label>
-							<select size="1" class="form-select" id="--" name="measure">
+							<label for="measureInput" class="form-label">Measure</label>
+							<select size="1" class="form-select" id="measureInput" name="measure">
 								<option value="">Measure</option>
 								{{#each measureTypes}}
 								<option value="{{this}}">{{this}}</option>
@@ -38,27 +39,33 @@
 						</div>
 					</div>
 				</div>
-				<input type="button" id="btns">
-				<div class="col">
-					<label for="--" class="form-label">Cuisin Type</label>
-					<select size="1" class="form-select" id="--" name="cuisinType">
-						<option value="">Cuisine</option>
-						{{#each cuisineTypes}}
-						<option value="{{this}}">{{this}}</option>
-						{{/each}}
-					</select>
-				</div>
-				<div class="col">
-					<label for="--" class="form-label">Meal Type</label>
-					<select size="1" class="form-select" id="--" name="mealType">
-						<option value="">Meal Type</option>
-						{{#each mealTypes}}
-						<option value="{{this}}">{{this}}</option>
-						{{/each}}
-					</select>
+				<input type="button" id="addIngredient" value="Add ingredient">
+				<div class="row my-3">
+					<div class="col">
+						<label for="cuisineType" class="form-label">Cuisine Type</label>
+						<select size="1" class="form-select" id="cuisineType" name="cuisineType">
+							<option value="">Cuisine</option>
+							{{#each cuisineTypes}}
+							<option value="{{this}}">{{this}}</option>
+							{{/each}}
+						</select>
+					</div>
+					<div class="col">
+						<label for="--" class="form-label">Meal Type</label>
+						<select size="1" class="form-select" id="--" name="mealType">
+							<option value="">Meal Type</option>
+							{{#each mealTypes}}
+							<option value="{{this}}">{{this}}</option>
+							{{/each}}
+						</select>
+					</div>
+					<div class="col">
+						<label for="totalTimeInput" class="form-label">Total Time (min)</label>
+						<input type="number" min="0" class="form-control" id="totalTimeInput" name="totalTime">
+					</div>
 				</div>
 
-				<input class="mt-2" type="submit" value="AAA">
+				<input class="mt-2" type="submit" value="Create recipe">
 			</form>
 		</div>
 	</div>

@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -9,4 +8,9 @@ a {
 
 h1 {
   color: 15px;
+}
+
+#caloriesInput::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
 }

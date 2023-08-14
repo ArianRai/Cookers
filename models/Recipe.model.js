@@ -16,15 +16,10 @@ const recipeSchema = new Schema(
 				measure: {
 					type: String,
 					enum: [
-						'Ounce',
 						'Gram',
-						'Pound',
 						'Kilogram',
 						'Pinch',
 						'Liter',
-						'Fluid ounce',
-						'Gallon',
-						'Pint',
 						'Quart',
 						'Milliliter',
 						'Drop',
@@ -64,7 +59,7 @@ const recipeSchema = new Schema(
 		},
 		totalTime: Number,
 		owner: {
-			type: [Schema.Types.ObjectId],
+			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
 	},

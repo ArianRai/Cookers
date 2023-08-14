@@ -10,45 +10,55 @@
 			<form action="/recipe/create" method="POST">
 				<div class="mb-3">
 					<label for="nameInput" class="form-label">Recipe name</label>
-					<input type="email" class="form-control" id="nameInput" name="name">
+					<input type="text" class="form-control" id="nameInput" name="name">
 				</div>
 
 				<div class="mb-3">
 					<label for="imgInput" class="form-label">Image</label>
-					<input type="password" class="form-control" id="imgInput" name="image">
+					<input type="text" class="form-control" id="imgInput" name="image">
 				</div>
+				<div class="content">
+					<div class="row" id="ingredient-group">
+						<div class="mb-3 col-4">
+							<label for="imgInput" class="form-label">Ingredient</label>
+							<input type="text" class="form-control" id="imgInput" name="food">
+						</div>
+						<div class="mb-3 col-4">
+							<label for="imgInput" class="form-label">Quantity</label>
+							<input type="number" class="form-control" id="imgInput" name="quantity">
+						</div>
+						<div class="col">
+							<label for="--" class="form-label">Measure</label>
+							<select size="1" class="form-select" id="--" name="measure">
+								<option value="">Measure</option>
+								{{#each measureTypes}}
+								<option value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+				</div>
+				<input type="button" id="btns">
 				<div class="col">
-					<label for="--" class="form-label">Ingredients</label>
-					<select size="1" class="form-select" id="--" name="--">
-						<option value="">Measure</option>
-						{{#each measureTypes}}
-						<option value="{{measureTypes}}">{{this}}</option>
+					<label for="--" class="form-label">Cuisin Type</label>
+					<select size="1" class="form-select" id="--" name="cuisinType">
+						<option value="">Cuisine</option>
+						{{#each cuisineTypes}}
+						<option value="{{this}}">{{this}}</option>
 						{{/each}}
 					</select>
 				</div>
-				<label>First name</label>
-				<input name="people[1][first_name]">
-
-				<label>Last name</label>
-				<input name="people[1][last_name]">
-
-				<label>Email</label>
-				<input name="people[1][email]">
-
-				Person 2:
-				<label>First name</label>
-				<input name="people[2][first_name]">
-
-				<label>Last name</label>
-				<input name="people[2][last_name]">
-
-				<label>Email</label>
-				<input name="people[2][email]">
-
-				<div class="d-grid gap-2">
-
+				<div class="col">
+					<label for="--" class="form-label">Meal Type</label>
+					<select size="1" class="form-select" id="--" name="mealType">
+						<option value="">Meal Type</option>
+						{{#each mealTypes}}
+						<option value="{{this}}">{{this}}</option>
+						{{/each}}
+					</select>
 				</div>
-				<input type="submit" value="AAA">
+
+				<input class="mt-2" type="submit" value="AAA">
 			</form>
 		</div>
 	</div>

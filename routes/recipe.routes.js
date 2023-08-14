@@ -5,15 +5,10 @@ const axios = require('axios')
 
 router.get('/create', (req, res, next) => {
 	const measureTypes = [
-		'Ounce',
 		'Gram',
-		'Pound',
 		'Kilogram',
 		'Pinch',
 		'Liter',
-		'Fluid ounce',
-		'Gallon',
-		'Pint',
 		'Quart',
 		'Milliliter',
 		'Drop',
@@ -21,12 +16,47 @@ router.get('/create', (req, res, next) => {
 		'Tablespoon',
 		'Teaspoon',
 	]
-
-	res.render('recipes/create-form', { measureTypes })
+	const cuisineTypes = [
+		'American',
+		'Asian',
+		'British',
+		'Caribbean',
+		'Central Europe',
+		'Chinese',
+		'Eastern Europe',
+		'French',
+		'Indian',
+		'Italian',
+		'Japanese',
+		'Kosher',
+		'Mediterranean',
+		'Mexican',
+		'Middle Eastern',
+		'Nordic',
+		'South American',
+		'South East Asian',
+	]
+	const mealTypes = ['Breakfast', 'Dinner', 'Lunch', 'Snack', 'Teatime']
+	res.render('recipes/create-form', { measureTypes, cuisineTypes, mealTypes })
 })
 
 router.post('/create', (req, res, next) => {
-	res.send(req.body)
+	const { name, image, food, quantity, measure, cuisinType, mealType } = req.body
+	const ingredients = []
+	food.forEach((elm, idx) => {
+		let ingredient = { food: elm, quantity: quantity[idx], measure: measure[idx] }
+		ingredients.push(ingredient)
+	})
+	const recipeInfo = {
+		name,
+		image,
+		ingredients,
+		cuisinType,
+		mealType,
+	}
+	Recipe.create(recipeInfo)
+		.then(recipeCreated => res.send(recipeCreated))
+		.catch(error => next(error))
 })
 
 router.get('/list', (req, res, next) => {

@@ -27,9 +27,17 @@
 				{{/each}}
 			</select>
 		</div>
+		<div class="col-11 mb-4">
+			{{#if errorMsg}}
+			<div id="error">
+				{{errorMsg}}
+			</div>
+			{{/if}}
+		</div>
 	</div>
 	<input class="mb-4 btn btn-success" type="submit" value="Filter recipes">
 </form>
+
 <div class="row justify-content-center mb-5">
 	<div class="col-9">
 		<h2>Recipe List</h2>
@@ -39,7 +47,7 @@
 				<p>{{recipe.label}}</p>
 				<div class="row me-2">
 					<div class="col">
-						<a href="recipe/details/{{recipe.uri}}" class="btn btn-warning d-grid">Details</a>
+						<a href="details?uri={{recipe.uri}}" class="btn btn-warning d-grid">Details</a>
 					</div>
 				</div>
 			</li>

@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Recipe = require('../models/Recipe.model')
+const recipesApi = require('../services/recipe.services')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../utils/const-utils')
 
@@ -34,25 +35,22 @@ router.post('/create', (req, res, next) => {
 })
 
 router.get('/list', (req, res, next) => {
-	// 	axios
-	// 		.get(
-	// 			`https://api.edamam.com/api/recipes/v2?type=public&q=potato&app_key=${process.env.API_KEY}&app_id=${process.env.API_ID}`
-	// 		)
-	// 		.then(response => {
-	// 			console.log(response.data.hits)
-	// 			res.render('recipes/list-view', { recipes: response.data.hits })
-	// 		})
-	// 		.catch(error => console.log(error))
-
-	res.render('recipes/list-view', { cuisineTypes, mealTypes })
+	let { error } = req.query
+	res.render('recipes/list-view', { cuisineTypes, mealTypes, error })
 })
 
 router.post('/list', (req, res, next) => {
 	const { food, calories, cuisineType, mealType } = req.body
-	axios
-		.get(
-			`https://api.edamam.com/api/recipes/v2?type=public&q=${food}&app_id=${process.env.API_ID}&app_key=${process.env.API_KEY}&cuisineType=${cuisineType}&mealType=${mealType}&calories=0-${calories}&random=true`
-		)
+	const queries = { q: food, calories, cuisineType, mealType }
+
+	//TODO VALIDAR FORM SI TODOS LOS CAMPOS ESTAN VACÍOS
+
+	// if (urlQueries.length === 0) {
+	// 	res.render('recipes/list-view', { errorMsg: 'Introduce some filter for the search' })
+	// }
+
+	recipesApi
+		.getRecipes(queries)
 		.then(response =>
 			res.render('recipes/list-view', {
 				recipes: response.data.hits,
@@ -60,7 +58,7 @@ router.post('/list', (req, res, next) => {
 				mealTypes,
 			})
 		)
-		.catch(err => next(err))
+		.catch(err => console.log(err))
 })
 
 module.exports = router

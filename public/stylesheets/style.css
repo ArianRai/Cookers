@@ -30,6 +30,7 @@ h1 {
 background: rgb(2,0,36, 0.7);
 background: linear-gradient(90deg, rgba(2,0,36,0.7) 0%, rgba(51,51,51,0.7) 44%);
 border-radius: 10px;
+min-height: 60px;
 }
 
 
@@ -38,8 +39,9 @@ border-radius: 10px;
 }
 
 .menu{
-	margin: 0 auto;
-	font-size: 1.5rem;
+	
+	font-size: 1.2rem;
+	justify-content: end;
 }
 
 .navbar-dark .navbar-nav .nav-link{
@@ -75,3 +77,15 @@ border-radius: 10px;
 .card-index{
 	width: 50%;
 }
+
+.nav-link.dropdown-toggle img{
+	width: 21%;
+	border-radius: 50%;
+	border: 1px solid #FFF;
+}
+
+.nav-item.dropdown {
+    width: 20%;
+}
+
+

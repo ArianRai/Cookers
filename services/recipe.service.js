@@ -23,6 +23,10 @@ class RecipeApiHandler {
 		}
 		return this.axiosApp.get('?' + searchParams.toString())
 	}
+
+	getOneRecipe(recipe_id) {
+		return this.axiosApp.get(`/${recipe_id}`)
+	}
 }
 
 const recipesApi = new RecipeApiHandler()

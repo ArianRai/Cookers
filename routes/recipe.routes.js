@@ -14,7 +14,7 @@ router.post('/create', (req, res, next) => {
 	const { name, image, food, quantity, measure, cuisineType, mealType } = req.body
 	const ingredients = []
 	const ingredientsLines = []
-	//TODO VALIDAR FORM O ELIMINAR CAMPOS VACÍOS
+
 	if (typeof food === 'object') {
 		food.forEach((elm, idx) => {
 			let ingredient = { quantity: quantity[idx], measure: measure[idx], food: elm }
@@ -77,8 +77,17 @@ router.post('/list', (req, res, next) => {
 		.catch(err => console.log(err))
 })
 
-router.get('/details/:uri', (req, res, next) => {
-	res.send('AAAA')
+router.post('/details', (req, res, next) => {
+	const { recipe_uri } = req.body
+	const recipe_id = recipe_uri.split('_')[1]
+
+	recipesApi
+		.getOneRecipe(recipe_id)
+		.then(response => {
+			const calories = Math.round(response.data.recipe.calories / response.data.recipe.yield)
+			res.render('recipes/recipe-details', { recipe: response.data.recipe, calories })
+		})
+		.catch(err => next(err))
 })
 
 module.exports = router

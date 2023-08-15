@@ -1,102 +1,91 @@
 const router = require('express').Router()
 const User = require('../models/User.model')
 
-
-const { isLoggedIn, checkRoles } = require('../middlewares/route-guard');
-const fileUploader = require('../config/cloudinary.config');
-
+const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
+const fileUploader = require('../config/cloudinary.config')
 
 // Users detail
-router.get("/list", (req, res, next) => {
+router.get('/list', (req, res, next) => {
+	let register = false
 
-  let register = false
-
-    User
-        .find()
-        .then(users => {
-          if(req.session.currentUser){
-            register = true
-          }          
-          res.render('user/user-list', { users, register })
-        })
-        .catch(err => next(err))
+	User.find()
+		.then(users => {
+			if (req.session.currentUser) {
+				register = true
+			}
+			res.render('user/user-list', { users, register })
+		})
+		.catch(err => next(err))
 })
-
 
 // User detail
 router.get('/:user_id/details', (req, res) => {
+	const { user_id } = req.params
 
-    const { user_id } = req.params
+	const userRoles = {
+		isAdmin: req.session.currentUser?.role === 'ADMIN',
+	}
 
-    const userRoles = {
-      isAdmin: req.session.currentUser?.role === 'ADMIN',
-    }
-  
-    User
-      .findById(user_id)
-      .then(user => {
+	User.findById(user_id)
+		.then(user => {
+			const userToEditRoles = {
+				isUser: user.role === 'USER',
+				isChef: user.role === 'CHEF',
+			}
 
-        const userToEditRoles = { 
-          isUser : user.role === 'USER',
-          isChef: user.role === 'CHEF'
-        }
+			res.render('user/user-details', { user, userRoles, userToEditRoles })
+		})
+		.catch(err => console.log(err))
+})
 
-        res.render('user/user-details', {user, userRoles,userToEditRoles})
-      })
-      .catch(err => console.log(err))
-  })
+// Render Edit
 
+router.get('/:user_id/edit', isLoggedIn, (req, res) => {
+	const { user_id } = req.params
 
-  // Render Edit
+	User.findById(user_id)
+		.then(user => res.render('user/user-edit', user))
+		.catch(err => console.log(err))
+})
 
-  router.get("/:user_id/edit", isLoggedIn, (req, res) => {
+// Handler Edit
 
-    const { user_id } = req.params
-  
-    User
-      .findById(user_id)
-      .then(user => res.render("user/user-edit", user))
-      .catch(err => console.log(err))
-  })
+router.post('/:user_id/edit', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
+	const { user_id } = req.params
+	const { username, email } = req.body
+	const { path: avatar } = req.file
 
-  // Handler Edit
+	User.findByIdAndUpdate(user_id, { username, email, avatar })
+		.then(user => res.redirect(`/user/${user._id}/details`))
+		.catch(err => console.log(err))
+})
 
-  router.post('/:user_id/edit', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
-
-    const { user_id } = req.params
-    const { username, email} = req.body
-    const { path: avatar } = req.file
-  
-    User
-      .findByIdAndUpdate(user_id, { username, email, avatar })
-      .then(user => res.redirect(`/user/${user._id}/details` ))
-      .catch(err => console.log(err))
-  })
-  
-  // Delete User   
+// Delete User
 
 router.post('/:user_id/delete', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+	const { user_id } = req.params
 
-    const { user_id } = req.params
-
-    User
-      .findByIdAndDelete(user_id)
-      .then(() => res.redirect(`/user/list`))
-      .catch(err => console.log(err))
-  })
-
-
-  // Change Role
-  router.post('/:user_id/edit/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
-
-    const { user_id, role } = req.params
-
-    User
-        .findByIdAndUpdate(user_id, {role} )
-        .then(() => res.redirect(`/user/${user_id}/details`))
-        .catch(err => console.log(err))
+	User.findByIdAndDelete(user_id)
+		.then(() => res.redirect(`/user/list`))
+		.catch(err => console.log(err))
 })
-  
 
+// Change Role
+router.post('/:user_id/edit/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+	const { user_id, role } = req.params
+
+	User.findByIdAndUpdate(user_id, { role })
+		.then(() => res.redirect(`/user/${user_id}/details`))
+		.catch(err => console.log(err))
+})
+
+router.post('/add-favorite', (req, res, next) => {
+	const { _id: user_id } = req.session.currentUser
+	const { recipe_uri } = req.body
+
+	User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(
+		res.send('AAA')
+	)
+})
 
 module.exports = router

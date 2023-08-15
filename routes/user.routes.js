@@ -3,14 +3,22 @@ const User = require('../models/User.model')
 
 
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard');
+const fileUploader = require('../config/cloudinary.config');
 
 
 // Users detail
-router.get("/list", isLoggedIn, (req, res, next) => {
+router.get("/list", (req, res, next) => {
+
+  let register = false
 
     User
         .find()
-        .then(users => res.render('user/user-list', { users }))
+        .then(users => {
+          if(req.session.currentUser){
+            register = true
+          }          
+          res.render('user/user-list', { users, register })
+        })
         .catch(err => next(err))
 })
 
@@ -40,7 +48,34 @@ router.get('/:user_id/details', (req, res) => {
   })
 
 
-  // Delete User    
+  // Render Edit
+
+  router.get("/:user_id/edit", isLoggedIn, (req, res) => {
+
+    const { user_id } = req.params
+  
+    User
+      .findById(user_id)
+      .then(user => res.render("user/user-edit", user))
+      .catch(err => console.log(err))
+  })
+
+  // Handler Edit
+
+  router.post('/:user_id/edit', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
+
+    const { user_id } = req.params
+    const { username, email} = req.body
+    const { path: avatar } = req.file
+  
+    User
+      .findByIdAndUpdate(user_id, { username, email, avatar })
+      .then(user => res.redirect(`/user/${user._id}/details`))
+      .catch(err => console.log(err))
+  })
+  
+  // Delete User   
+
 router.post('/:user_id/delete', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 
     const { user_id } = req.params
@@ -56,11 +91,6 @@ router.post('/:user_id/delete', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
   router.post('/:user_id/edit/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 
     const { user_id, role } = req.params
-
-    // const userRoles = {
-    //     isPm: req.session.currentUser?.role === 'PM'
-    //     // isEditor: req.session.currentUser?.role === 'EDITOR'
-    // }
 
     User
         .findByIdAndUpdate(user_id, {role} )

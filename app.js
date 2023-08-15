@@ -8,7 +8,7 @@ const app = express()
 require('./config')(app)
 require('./config/session.config')(app)
 
-app.locals.appTitle = `Pruebotas`
+app.locals.appTitle = `Cookers & Chefs`
 
 require('./routes')(app)
 require('./error-handling')(app)

@@ -6,7 +6,7 @@ const { isLoggedIn, checkRoles } = require('../middlewares/route-guard');
 
 
 // Users detail
-router.get("/list", (req, res, next) => {
+router.get("/list", isLoggedIn, (req, res, next) => {
 
     User
         .find()

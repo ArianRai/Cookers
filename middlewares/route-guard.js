@@ -3,7 +3,7 @@ const isLoggedIn = (req, res, next) => {
     if (req.session.currentUser) {
         next()
     } else {
-        res.redirect('/signup?err=Login to access')
+        res.redirect('/login?err=Login to access')
     }
 }
 
@@ -23,7 +23,7 @@ const checkRoles = (...admittedRoles) => (req, res, next) => {
     if (admittedRoles.includes(role)) {
         next()
     } else {
-        res.redirect('/signup?err=You are not authorized')
+        res.redirect('/login?err=You are not authorized')
     }
 }
 

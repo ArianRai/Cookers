@@ -38,6 +38,14 @@
                 {{/if}}      
             {{/if}}
 
+            {{#if userToEditRoles.isChef}}
+                 <a href="/user/{{user._id}}/edit">Editar</a>
+            {{/if}}
+            {{#if userToEditRoles.isUser}}
+                <a href="/user/{{user._id}}/edit">Editar</a>
+            {{/if}}
+
+
             
         </div>
 

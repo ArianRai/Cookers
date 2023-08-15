@@ -25,6 +25,7 @@ router.get('/:user_id/details', (req, res) => {
 
 	const userRoles = {
 		isAdmin: req.session.currentUser?.role === 'ADMIN',
+		isMyself: req.session.currentUser?._id === user_id,
 	}
 
 	User.findById(user_id)
@@ -33,15 +34,28 @@ router.get('/:user_id/details', (req, res) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-
-			res.render('user/user-details', { user, userRoles, userToEditRoles })
+			Promise.all(
+				user.favoritesFromAPI.map(eachURI => {
+					return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
+						console.log(recipe.data)
+						return recipe.data.recipe
+					})
+				})
+			).then(response => {
+				res.render('user/user-details', {
+					user,
+					userRoles,
+					userToEditRoles,
+					recipes: response,
+				})
+			})
 		})
-		.catch(err => console.log(err))
+		.catch(err => next(err))
 })
 
 // Render Edit
 
-router.get('/:user_id/edit', isLoggedIn, (req, res) => {
+router.get('/:user_id/edit', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 	const { user_id } = req.params
 
 	User.findById(user_id)
@@ -51,15 +65,21 @@ router.get('/:user_id/edit', isLoggedIn, (req, res) => {
 
 // Handler Edit
 
-router.post('/:user_id/edit', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
-	const { user_id } = req.params
-	const { username, email } = req.body
-	const { path: avatar } = req.file
+router.post(
+	'/:user_id/edit',
+	isLoggedIn,
+	checkRoles('ADMIN'),
+	fileUploader.single('avatar'),
+	(req, res) => {
+		const { user_id } = req.params
+		const { username, email } = req.body
+		const { path: avatar } = req.file
 
-	User.findByIdAndUpdate(user_id, { username, email, avatar })
-		.then(user => res.redirect(`/user/${user._id}/details`))
-		.catch(err => console.log(err))
-})
+		User.findByIdAndUpdate(user_id, { username, email, avatar })
+			.then(user => res.redirect(`/user/${user._id}/details`))
+			.catch(err => console.log(err))
+	}
+)
 
 // Delete User
 
@@ -105,14 +125,6 @@ router.post('/favorite/:action', (req, res, next) => {
 			})
 		)
 	}
-})
-
-
-router.get("/profile", isLoggedIn, (req, res) => {
-
-  console.log('EL USUARIO LOGUEADO ES', req.session.currentUser)
-
-  res.render("user/user-details", { loggedUser: req.session.currentUser });
 })
 
 module.exports = router

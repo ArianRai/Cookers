@@ -13,10 +13,6 @@ class RecipeApiHandler {
 		})
 	}
 
-	getAllCharacters() {
-		return this.axiosApp.get('/characters')
-	}
-
 	getRecipes(queries) {
 		const searchParams = new URLSearchParams()
 

@@ -13,25 +13,43 @@ router.get('/create', (req, res, next) => {
 router.post('/create', (req, res, next) => {
 	const { name, image, food, quantity, measure, cuisineType, mealType } = req.body
 	const ingredients = []
+	const ingredientsLines = []
 	//TODO VALIDAR FORM O ELIMINAR CAMPOS VACÍOS
-	if (typeof food === Array) {
+	if (typeof food === 'object') {
 		food.forEach((elm, idx) => {
-			let ingredient = { food: elm, quantity: quantity[idx], measure: measure[idx] }
+			let ingredient = { quantity: quantity[idx], measure: measure[idx], food: elm }
 			ingredients.push(ingredient)
+			console.log(ingredient)
+			console.log(Object.values(ingredient).join(' '))
+			ingredientsLines.push(Object.values(ingredient).join(' '))
 		})
 	} else {
-		ingredients.push({ food, quantity, measure })
+		ingredients.push({ quantity, measure, food })
+		ingredientsLines.push(Object.values(ingredients[0]).join(' '))
 	}
+
 	const recipeInfo = {
 		name,
 		image,
+		ingredientsLines,
 		ingredients,
 		cuisineType,
 		mealType,
 	}
 	Recipe.create(recipeInfo)
 		.then(recipeCreated => res.send(recipeCreated))
-		.catch(error => next(error))
+		.catch(error => {
+			if (error._message) {
+				res.render('recipes/create-form', {
+					errorMsg: error._message,
+					measureTypes,
+					cuisineTypes,
+					mealTypes,
+				})
+				return
+			}
+			next(error)
+		})
 })
 
 router.get('/list', (req, res, next) => {
@@ -43,11 +61,9 @@ router.post('/list', (req, res, next) => {
 	const { food, calories, cuisineType, mealType } = req.body
 	const queries = { q: food, calories, cuisineType, mealType }
 
-	//TODO VALIDAR FORM SI TODOS LOS CAMPOS ESTAN VACÍOS
-
-	// if (urlQueries.length === 0) {
-	// 	res.render('recipes/list-view', { errorMsg: 'Introduce some filter for the search' })
-	// }
+	if (Object.values(queries).every(val => val === '')) {
+		res.render('recipes/list-view', { errorMsg: 'Fullfill at least one field for the search' })
+	}
 
 	recipesApi
 		.getRecipes(queries)
@@ -59,6 +75,10 @@ router.post('/list', (req, res, next) => {
 			})
 		)
 		.catch(err => console.log(err))
+})
+
+router.get('/details/:uri', (req, res, next) => {
+	res.send('AAAA')
 })
 
 module.exports = router

@@ -1,4 +1,9 @@
 
+const updateloggedUser = (req, res, next) => {
+    res.locals.loggedUser = req.session.currentUser
+    next()
+}
+
 const isLoggedIn = (req, res, next) => {
     if (req.session.currentUser) {
         next()
@@ -31,5 +36,6 @@ const checkRoles = (...admittedRoles) => (req, res, next) => {
 module.exports = {
     isLoggedIn,
     isLoggedOut,
-    checkRoles
+    checkRoles,
+    updateloggedUser
 }

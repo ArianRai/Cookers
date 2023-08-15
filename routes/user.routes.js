@@ -88,4 +88,14 @@ router.post('/add-favorite', (req, res, next) => {
 	)
 })
 
+
+router.get("/profile", isLoggedIn, (req, res) => {
+
+  console.log('EL USUARIO LOGUEADO ES', req.session.currentUser)
+
+  res.render("user/user-details", { loggedUser: req.session.currentUser });
+})
+
+module.exports = router
+
 module.exports = router

@@ -28,18 +28,24 @@
 							<li class="nav-item">
 								<a class="nav-link menu_color" href="/user/list">Users List</a>
 							</li>
+							{{#unless loggedUser}}
+							<li class="nav-item"><a class="nav-link menu_color" href="/auth/signup">SingUP</a></li>
+							<li class="nav-item"><a class="nav-link menu_color" href="/auth/login">Login</a></li>
+							{{/unless}}
+							
+							{{#if loggedUser}}
 							<li class="nav-item dropdown">
 								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 									data-bs-toggle="dropdown" aria-expanded="false">
-									Auth
+									Welcome {{loggedUser.username}}
 								</a>
 								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<li><a class="dropdown-item" href="/auth/signup">SingUP</a></li>
-									<li><a class="dropdown-item" href="/auth/login">Login</a></li>
+									<li><a class="dropdown-item" href="/user/{{loggedUser._id}}/details">My Profile</a></li>
 									<li><a class="dropdown-item" href="/auth/logout">Cerrar sesión</a></li>
-									<li><a class="dropdown-item" href="/user/{{_id}}/details">Mi perfil</a></li>
 								</ul>
+								
               				</li>
+							{{/if}}
 						</ul>
 						
 					</div>

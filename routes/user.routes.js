@@ -41,7 +41,6 @@ router.get('/:user_id/details', (req, res) => {
           isChef: user.role === 'CHEF'
         }
 
-        console.log(userToEditRoles)
         res.render('user/user-details', {user, userRoles,userToEditRoles})
       })
       .catch(err => console.log(err))
@@ -70,7 +69,7 @@ router.get('/:user_id/details', (req, res) => {
   
     User
       .findByIdAndUpdate(user_id, { username, email, avatar })
-      .then(user => res.redirect(`/user/${user._id}/details`))
+      .then(user => res.redirect(`/user/${user._id}/details` ))
       .catch(err => console.log(err))
   })
   

@@ -13,10 +13,8 @@ router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
 	const { username, email, plainPassword } = req.body
 	// const { path: avatar } = req.file
 
-	let avatar = undefined
-    if (req.file !== undefined) {
-        avatar = req.file
-    }
+	let avatar = req.file?.path
+
 
 	bcrypt
 		.genSalt(saltRounds)
@@ -54,8 +52,8 @@ router.post('/login', (req, res, next) => {
 		.catch(error => next(error))
 })
 
-router.post('/logout', (req, res, next) => {
-	// req.session.destroy(() => res.redirect('/login'))
+router.get('/logout', (req, res, next) => {
+	req.session.destroy(() => res.redirect('/'))
 })
 
 module.exports = router

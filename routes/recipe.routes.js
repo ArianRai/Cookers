@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const Recipe = require('../models/Recipe.model')
-const recipesApi = require('../services/recipe.services')
+const recipesApi = require('../services/recipe.service')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../utils/const-utils')
 

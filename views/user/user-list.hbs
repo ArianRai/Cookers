@@ -11,7 +11,9 @@
                 <img src="{{avatar}}" alt="{{username}}">
                 <figcaption>{{username}}, {{email}}</figcaption>
             </figure>
+            {{#if ../register}}
             <p><a href="/user/{{_id}}/details">Details</a></p>
+            {{/if}}
         </div>
         {{/each}}
     </div>

@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/User.model')
+const recipesApi = require('../services/recipe.service')
 
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
 const fileUploader = require('../config/cloudinary.config')
@@ -79,13 +80,31 @@ router.post('/:user_id/edit/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) 
 		.catch(err => console.log(err))
 })
 
-router.post('/add-favorite', (req, res, next) => {
+router.post('/favorite/:action', (req, res, next) => {
 	const { _id: user_id } = req.session.currentUser
 	const { recipe_uri } = req.body
+	const { action } = req.params
+	const recipe_id = recipe_uri.split('_')[1]
 
-	User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(
-		res.send('AAA')
-	)
+	if (action === 'add') {
+		User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(user =>
+			recipesApi.getOneRecipe(recipe_id).then(response => {
+				const isFavorite = true
+				let { recipe } = response.data
+				const calories = Math.round(recipe.calories / recipe.yield)
+				res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+			})
+		)
+	} else if (action === 'deletes') {
+		User.findByIdAndUpdate(user_id, { $pull: { favoritesFromAPI: recipe_uri } }).then(user =>
+			recipesApi.getOneRecipe(recipe_id).then(response => {
+				const isFavorite = false
+				let { recipe } = response.data
+				const calories = Math.round(recipe.calories / recipe.yield)
+				res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+			})
+		)
+	}
 })
 
 module.exports = router

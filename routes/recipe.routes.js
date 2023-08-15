@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const Recipe = require('../models/Recipe.model')
+const User = require('../models/User.model')
 const recipesApi = require('../services/recipe.service')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../utils/const-utils')
@@ -53,8 +54,7 @@ router.post('/create', (req, res, next) => {
 })
 
 router.get('/list', (req, res, next) => {
-	let { error } = req.query
-	res.render('recipes/list-view', { cuisineTypes, mealTypes, error })
+	res.render('recipes/list-view', { cuisineTypes, mealTypes })
 })
 
 router.post('/list', (req, res, next) => {
@@ -80,12 +80,17 @@ router.post('/list', (req, res, next) => {
 router.post('/details', (req, res, next) => {
 	const { recipe_uri } = req.body
 	const recipe_id = recipe_uri.split('_')[1]
+	const { _id: user_id } = req.session.currentUser
 
-	recipesApi
-		.getOneRecipe(recipe_id)
+	const promises = [User.findById(user_id), recipesApi.getOneRecipe(recipe_id)]
+
+	Promise.all(promises)
 		.then(response => {
-			const calories = Math.round(response.data.recipe.calories / response.data.recipe.yield)
-			res.render('recipes/recipe-details', { recipe: response.data.recipe, calories })
+			let user = response[0]
+			const isFavorite = user.favoritesFromAPI.includes(recipe_uri)
+			let { recipe } = response[1].data
+			const calories = Math.round(recipe.calories / recipe.yield)
+			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
 		})
 		.catch(err => next(err))
 })

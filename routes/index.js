@@ -10,4 +10,7 @@ module.exports = app => {
 
 	const userRoutes = require('./user.routes')
 	app.use('/user', userRoutes)
+
+	const reviewRoutes = require('./review.routes')
+	app.use('/review', reviewRoutes)
 }

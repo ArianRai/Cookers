@@ -15,12 +15,11 @@ router.get('/list', (req, res, next) => {
 			const allUsers = []
 			const allChefs = []
 
-			users.forEach((elm)=> {
-
+			users.forEach(elm => {
 				console.log(elm.role)
-				if (elm.role === "USER"){
+				if (elm.role === 'USER') {
 					allUsers.push(elm)
-				} else if (elm.role === "CHEF"){ 
+				} else if (elm.role === 'CHEF') {
 					allChefs.push(elm)
 				}
 			})
@@ -28,7 +27,7 @@ router.get('/list', (req, res, next) => {
 			if (req.session.currentUser) {
 				register = true
 			}
-			
+
 			res.render('user/user-list', { users, register, allUsers, allChefs })
 		})
 		.catch(err => next(err))
@@ -95,11 +94,22 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 						userToEditRoles,
 					})
 				}
-			} else {
-				res.render('user/user-details', {
-					user,
-					userRoles,
-					userToEditRoles,
+			} else if (action === 'fromMySelf') {
+				Recipe.find({ owner: user_id }).then(recipesFromMySelf => {
+					if (recipesFromMySelf.length !== 0) {
+						res.render('user/user-details', {
+							user,
+							userRoles,
+							userToEditRoles,
+							recipesFromMySelf,
+						})
+					} else {
+						res.render('user/user-details', {
+							user,
+							userRoles,
+							userToEditRoles,
+						})
+					}
 				})
 			}
 		})

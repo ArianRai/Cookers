@@ -12,7 +12,7 @@ router.get('/create', (req, res, next) => {
 })
 
 router.post('/create', (req, res, next) => {
-	const { name, image, food, quantity, measure, cuisineType, mealType } = req.body
+	const { name, image, food, quantity, measure, cuisineType, mealType, totalTime } = req.body
 	const ingredients = []
 	const ingredientsLines = []
 
@@ -36,6 +36,7 @@ router.post('/create', (req, res, next) => {
 		ingredients,
 		cuisineType,
 		mealType,
+		totalTime,
 	}
 	Recipe.create(recipeInfo)
 		.then(recipeCreated => res.send(recipeCreated))
@@ -93,6 +94,27 @@ router.post('/details', (req, res, next) => {
 			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
 		})
 		.catch(err => next(err))
+})
+
+router.get('/chefs-list', (req, res, next) => {
+	Recipe.find()
+		.then(response => res.render('recipes/chefs-recipes-list', { recipes: response }))
+		// .then(response => console.log(response))
+		.catch(err => next(err))
+})
+
+router.post('/recipe-chef-details', (req, res, next) => {
+	const { id: recipe_id } = req.body
+	const { _id: user_id } = req.session.currentUser
+	const promises = [User.findById(user_id), Recipe.findById(recipe_id)]
+
+	Promise.all(promises).then(response => {
+		let user = response[0]
+		const isFavorite = user.favoritesFromChefs.includes(recipe_id)
+		console.log(isFavorite)
+		let recipe = response[1]
+		res.render('recipes/chef-recipe-details', { recipe, isFavorite })
+	})
 })
 
 module.exports = router

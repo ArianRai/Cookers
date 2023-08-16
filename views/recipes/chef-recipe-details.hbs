@@ -1,25 +1,25 @@
 <div class="container mb-5">
 	<div class="row">
 		<div class="col-3">
-			<img src="{{recipe.image}}" alt="{{recipe.label}}">
+			<img src="{{image}}" alt="{{name}}">
+
 			{{#if isFavorite}}
-			<form action="/user/favorite/deletes" method="POST">
-				<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
+			<form action="/user/chefs-favorite/deletes" method="POST">
+				<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
 				<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
 			</form>
 			{{else}}
-			<form action="/user/favorite/add" method="POST">
-				<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
+			<form action="/user/chefs-favorite/add" method="POST">
+				<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
 				<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
 			</form>
 			{{/if}}
+
 		</div>
 		<div class="col">
 			<div class="row flex-column">
-				<h2>{{recipe.label}}</h2>
+				<h2>{{recipe.name}}</h2>
 				<hr>
-				<p><strong>Calories/serving: </strong>{{calories}}</p>
-				<p><strong>Servings: </strong>{{recipe.yield}}</p>
 				<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
 				<p>{{#each recipe.ingredients}}
 					{{food}} |
@@ -28,7 +28,7 @@
 				<h4>Ingredients</h4>
 				<div class="container">
 					<ul>
-						{{#each recipe.ingredientLines}}
+						{{#each recipe.ingredientsLines}}
 						<li>{{this}}</li>
 						{{/each}}
 					</ul>

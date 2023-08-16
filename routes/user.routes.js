@@ -4,6 +4,8 @@ const recipesApi = require('../services/recipe.service')
 
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
 const fileUploader = require('../config/cloudinary.config')
+const { response } = require('express')
+const Recipe = require('../models/Recipe.model')
 
 // Users detail
 router.get('/list', (req, res, next) => {
@@ -37,7 +39,6 @@ router.get('/:user_id/details', (req, res) => {
 			Promise.all(
 				user.favoritesFromAPI.map(eachURI => {
 					return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
-						console.log(recipe.data)
 						return recipe.data.recipe
 					})
 				})
@@ -106,27 +107,51 @@ router.post('/favorite/:action', (req, res, next) => {
 	const { action } = req.params
 	const recipe_id = recipe_uri.split('_')[1]
 
+	recipesApi.getOneRecipe(recipe_id).then(response => {
+		let { recipe } = response.data
+		const calories = Math.round(recipe.calories / recipe.yield)
+
+		if (action === 'add') {
+			User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(
+				() => {
+					res.render('recipes/recipe-details', { recipe, calories, isFavorite: true })
+				}
+			)
+		}
+
+		if (action === 'deletes') {
+			User.findByIdAndUpdate(user_id, { $pull: { favoritesFromAPI: recipe_uri } }).then(
+				() => {
+					res.render('recipes/recipe-details', { recipe, calories, isFavorite: false })
+				}
+			)
+		}
+	})
+})
+
+router.post('/chefs-favorite/:action', (req, res, next) => {
+	const { _id: user_id } = req.session.currentUser
+	const { recipe_id } = req.body
+	const { action } = req.params
+
+	// console.log(req.body)
+
 	if (action === 'add') {
-		User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(user =>
-			recipesApi.getOneRecipe(recipe_id).then(response => {
-				const isFavorite = true
-				let { recipe } = response.data
-				const calories = Math.round(recipe.calories / recipe.yield)
-				res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+		User.findByIdAndUpdate(user_id, { $push: { favoritesFromChefs: recipe_id } }).then(() =>
+			Recipe.findById(recipe_id).then(recipe => {
+				// console.log(recipe)
+				res.render('recipes/chef-recipe-details', { recipe, isFavorite: true })
 			})
 		)
-	} else if (action === 'deletes') {
-		User.findByIdAndUpdate(user_id, { $pull: { favoritesFromAPI: recipe_uri } }).then(user =>
-			recipesApi.getOneRecipe(recipe_id).then(response => {
-				const isFavorite = false
-				let { recipe } = response.data
-				const calories = Math.round(recipe.calories / recipe.yield)
-				res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+	}
+
+	if (action === 'deletes') {
+		User.findByIdAndUpdate(user_id, { $pull: { favoritesFromChefs: recipe_id } }).then(() =>
+			Recipe.findById(recipe_id).then(recipe => {
+				res.render('recipes/chef-recipe-details', { recipe, isFavorite: false })
 			})
 		)
 	}
 })
-
-module.exports = router
 
 module.exports = router

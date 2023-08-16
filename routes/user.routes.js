@@ -21,8 +21,8 @@ router.get('/list', (req, res, next) => {
 })
 
 // User detail
-router.get('/details/:user_id', (req, res) => {
-	const { user_id } = req.params
+router.get('/details/:user_id/:action', (req, res, next) => {
+	const { user_id, action } = req.params
 
 	const userRoles = {
 		isAdmin: req.session.currentUser?.role === 'ADMIN',
@@ -35,21 +35,52 @@ router.get('/details/:user_id', (req, res) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-			if (user.favoritesFromAPI.length) {
-				Promise.all(
-					user.favoritesFromAPI.map(eachURI => {
+
+			if (action === 'fromApi') {
+				if (user.favoritesFromAPI.length !== 0) {
+					const promises1 = user.favoritesFromAPI.map(eachURI => {
 						return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
 							return recipe.data.recipe
 						})
 					})
-				).then(response => {
+					Promise.all(promises1).then(response => {
+						res.render('user/user-details', {
+							user,
+							userRoles,
+							userToEditRoles,
+							recipesFromApi: response,
+						})
+					})
+				} else {
 					res.render('user/user-details', {
 						user,
 						userRoles,
 						userToEditRoles,
-						recipes: response,
 					})
-				})
+				}
+			} else if (action === 'fromChefs') {
+				if (user.favoritesFromChefs.length !== 0) {
+					const promises2 = user.favoritesFromChefs.map(eachId => {
+						return Recipe.findById(eachId).then(recipe => {
+							return recipe
+						})
+					})
+					Promise.all(promises2).then(response => {
+						console.log(response)
+						res.render('user/user-details', {
+							user,
+							userRoles,
+							userToEditRoles,
+							recipesFromChefs: response,
+						})
+					})
+				} else {
+					res.render('user/user-details', {
+						user,
+						userRoles,
+						userToEditRoles,
+					})
+				}
 			} else {
 				res.render('user/user-details', {
 					user,
@@ -73,20 +104,15 @@ router.get('/edit/:user_id', isLoggedIn, (req, res) => {
 
 // Handler Edit
 
-router.post(
-	'/edit/:user_id',
-	isLoggedIn,
-	fileUploader.single('avatar'),
-	(req, res) => {
-		const { user_id } = req.params
-		const { username, email } = req.body
-		const { path: avatar } = req.file
+router.post('/edit/:user_id', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
+	const { user_id } = req.params
+	const { username, email } = req.body
+	const { path: avatar } = req.file
 
-		User.findByIdAndUpdate(user_id, { username, email, avatar })
-			.then(user => res.redirect(`/user/details/${user._id}`))
-			.catch(err => console.log(err))
-	}
-)
+	User.findByIdAndUpdate(user_id, { username, email, avatar })
+		.then(user => res.redirect(`/user/details/${user._id}`))
+		.catch(err => console.log(err))
+})
 
 // Delete User
 

@@ -13,7 +13,7 @@
 				</div>
 				{{/if}}
 			</div>
-			<form action="/recipe/create" method="POST" class="needs-validation">
+			<form action="/recipe/create" method="POST" class="needs-validation" enctype="multipart/form-data">
 				<div class="mb-3">
 					<label for="nameInput" class="form-label">Recipe name</label>
 					<input type="text" class="form-control" id="nameInput" name="name" required>
@@ -21,7 +21,8 @@
 
 				<div class="mb-3">
 					<label for="imgInput" class="form-label">Image</label>
-					<input type="text" class="form-control" id="imgInput" name="image" required>
+					{{!-- <input type="text" class="form-control" id="imgInput" name="image" required> --}}
+					<input type="file" id="imgInput" name="image" class="form-control-file" value=" "/>
 				</div>
 				<div class="content">
 					<div class="row" id="ingredient-group">

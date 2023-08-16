@@ -36,28 +36,28 @@ router.get('/details/:user_id', (req, res) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-			res.render(
-				'user/user-details',
-				{
+			if (user.favoritesFromAPI.length) {
+				Promise.all(
+					user.favoritesFromAPI.map(eachURI => {
+						return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
+							return recipe.data.recipe
+						})
+					})
+				).then(response => {
+					res.render('user/user-details', {
+						user,
+						userRoles,
+						userToEditRoles,
+						recipes: response,
+					})
+				})
+			} else {
+				res.render('user/user-details', {
 					user,
 					userRoles,
 					userToEditRoles,
-				}
-				// Promise.all(
-				// 	user.favoritesFromAPI.map(eachURI => {
-				// 		return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
-				// 			return recipe.data.recipe
-				// 		})
-				// 	})
-			)
-			// .then(response => {
-			// 	res.render('user/user-details', {
-			// 		user,
-			// 		userRoles,
-			// 		userToEditRoles,
-			// 		// recipes: response,
-			// 	})
-			// })
+				})
+			}
 		})
 		.catch(err => next(err))
 })

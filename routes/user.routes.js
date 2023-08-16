@@ -6,16 +6,30 @@ const fileUploader = require('../config/cloudinary.config')
 const { response } = require('express')
 const Recipe = require('../models/Recipe.model')
 
-// Users detail
+// Users List
 router.get('/list', (req, res, next) => {
 	let register = false
 
 	User.find()
 		.then(users => {
+			const allUsers = []
+			const allChefs = []
+
+			users.forEach((elm)=> {
+
+				console.log(elm.role)
+				if (elm.role === "USER"){
+					allUsers.push(elm)
+				} else if (elm.role === "CHEF"){ 
+					allChefs.push(elm)
+				}
+			})
+			console.log(allChefs)
 			if (req.session.currentUser) {
 				register = true
 			}
-			res.render('user/user-list', { users, register })
+			
+			res.render('user/user-list', { users, register, allUsers, allChefs })
 		})
 		.catch(err => next(err))
 })

@@ -1,20 +1,59 @@
 <div class="container">
 
-	<h3>Users List</h3>
-
-	<hr>
 
 	<div class="row">
-		{{#each users}}
-		<div class="col-md-3 mb-3">
-			<figure class="user-card ">
-				<img src="{{avatar}}" alt="{{username}}">
-				<figcaption>{{username}}, {{email}}</figcaption>
-			</figure>
-			{{#if ../register}}
-			<p><a href="/user/details/{{_id}}/fromChefs">Details</a></p>
-			{{/if}}
+		<div class="col list-view">
+			<div class="view_title_list">
+				<h4>Our Users</h4>
+				<hr>
+			</div>
+			{{#each allUsers}}
+			<div class="card mb-3 border-0 card-view-list" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="{{avatar}}" class="img-fluid avatar-list" alt="{{username}}">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">{{username}}</h5>
+							<p class="card-text">{{email}}</p>
+							<p class="card-text">
+								{{#if ../register}}
+							<p><a href="/user/details/{{_id}}" class="button-list-details">Details</a></p>
+							{{/if}}
+						</div>
+					</div>
+				</div>
+			</div>
+			{{/each}}
 		</div>
-		{{/each}}
+
+		<div class="col list-view">
+			<div class="view_title_list">
+				<h4>Our Chefs</h4>
+				<hr>
+			</div>
+			{{#each allChefs}}
+			<div class="card mb-3 border-0 card-view-list" style="max-width: 540px;">
+				<div class="row g-0">
+					<div class="col-md-4">
+						<img src="{{avatar}}" class="img-fluid avatar-list" alt="{{username}}">
+					</div>
+					<div class="col-md-8">
+						<div class="card-body">
+							<h5 class="card-title">{{username}}</h5>
+							<p class="card-text email">{{email}}</p>
+							<p class="card-text">
+								{{#if ../register}}
+							<p><a href="/user/details/{{_id}}/fromChefs" class="button-list-details">Details</a></p>
+							{{/if}}
+
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			{{/each}}
+		</div>
 	</div>
 </div>

@@ -37,7 +37,7 @@ router.post('/login', (req, res, next) => {
 	User.findOne({ email })
 		.then(user => {
 			if (!user) {
-				res.render('auth/login', {
+				res.render('auth/login-form', {
 					errorMessage: 'There is no account with this email',
 				})
 				return

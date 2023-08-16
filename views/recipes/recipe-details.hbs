@@ -3,7 +3,7 @@
 		<div class="col-3">
 			<img src="{{recipe.image}}" alt="{{recipe.label}}">
 			{{#if isFavorite}}
-			<form action="/user/favorite/deletes" method="POST">
+			<form action="/user/favorite/remove" method="POST">
 				<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
 				<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
 			</form>

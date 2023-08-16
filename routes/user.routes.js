@@ -22,7 +22,7 @@ router.get('/list', (req, res, next) => {
 })
 
 // User detail
-router.get('/:user_id/details', (req, res) => {
+router.get('/details/:user_id', (req, res) => {
 	const { user_id } = req.params
 
 	const userRoles = {
@@ -36,27 +36,35 @@ router.get('/:user_id/details', (req, res) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-			Promise.all(
-				user.favoritesFromAPI.map(eachURI => {
-					return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
-						return recipe.data.recipe
-					})
-				})
-			).then(response => {
-				res.render('user/user-details', {
+			res.render(
+				'user/user-details',
+				{
 					user,
 					userRoles,
 					userToEditRoles,
-					recipes: response,
-				})
-			})
+				}
+				// Promise.all(
+				// 	user.favoritesFromAPI.map(eachURI => {
+				// 		return recipesApi.getOneRecipe(eachURI.split('_')[1]).then(recipe => {
+				// 			return recipe.data.recipe
+				// 		})
+				// 	})
+			)
+			// .then(response => {
+			// 	res.render('user/user-details', {
+			// 		user,
+			// 		userRoles,
+			// 		userToEditRoles,
+			// 		// recipes: response,
+			// 	})
+			// })
 		})
 		.catch(err => next(err))
 })
 
 // Render Edit
 
-router.get('/:user_id/edit', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+router.get('/edit/:user_id', isLoggedIn, (req, res) => {
 	const { user_id } = req.params
 
 	User.findById(user_id)
@@ -67,7 +75,7 @@ router.get('/:user_id/edit', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 // Handler Edit
 
 router.post(
-	'/:user_id/edit',
+	'/edit/:user_id',
 	isLoggedIn,
 	checkRoles('ADMIN'),
 	fileUploader.single('avatar'),
@@ -84,7 +92,7 @@ router.post(
 
 // Delete User
 
-router.post('/:user_id/delete', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+router.post('/delete/:user_id', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 	const { user_id } = req.params
 
 	User.findByIdAndDelete(user_id)
@@ -93,7 +101,7 @@ router.post('/:user_id/delete', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 })
 
 // Change Role
-router.post('/:user_id/edit/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
@@ -119,7 +127,7 @@ router.post('/favorite/:action', (req, res, next) => {
 			)
 		}
 
-		if (action === 'deletes') {
+		if (action === 'remove') {
 			User.findByIdAndUpdate(user_id, { $pull: { favoritesFromAPI: recipe_uri } }).then(
 				() => {
 					res.render('recipes/recipe-details', { recipe, calories, isFavorite: false })
@@ -139,13 +147,12 @@ router.post('/chefs-favorite/:action', (req, res, next) => {
 	if (action === 'add') {
 		User.findByIdAndUpdate(user_id, { $push: { favoritesFromChefs: recipe_id } }).then(() =>
 			Recipe.findById(recipe_id).then(recipe => {
-				// console.log(recipe)
 				res.render('recipes/chef-recipe-details', { recipe, isFavorite: true })
 			})
 		)
 	}
 
-	if (action === 'deletes') {
+	if (action === 'remove') {
 		User.findByIdAndUpdate(user_id, { $pull: { favoritesFromChefs: recipe_id } }).then(() =>
 			Recipe.findById(recipe_id).then(recipe => {
 				res.render('recipes/chef-recipe-details', { recipe, isFavorite: false })

@@ -20,25 +20,26 @@
 
 			{{#if userRoles.isAdmin}}
 			<!-- DELETE USER -->
-			<form action="/user/{{user._id}}/delete" method="POST">
+			<form action="/user/delete/{{user._id}}" method="POST">
 				<button type="submit" class="btn btn-danger">Delete user</button>
 			</form>
 
 			<!-- EDIT ROL USER-->
 			{{#if userToEditRoles.isChef}}
-			<form action="/user/{{user._id}}/edit/USER" method="POST">
+			<form action="/user/edit-role/{{user._id}}/USER" method="POST">
 				<input type="submit" class="btn btn-secondary" name="checkRole" value="Make User">
 			</form>
 			{{/if}}
 			{{#if userToEditRoles.isUser}}
-			<form action="/user/{{user._id}}/edit/CHEF" method="POST">
+			<form action="/user/edit-role/{{user._id}}/CHEF" method="POST">
 				<input type="submit" class="btn btn-secondary" name="checkRole" value="Make Chef">
 			</form>
 			{{/if}}
+
 			{{/if}}
 
 			{{#if userRoles.isMyself}}
-			<a href="/user/{{user._id}}/edit">Editar</a>
+			<a href="/user/edit/{{user._id}}">Editar</a>
 			{{/if}}
 
 		</div>

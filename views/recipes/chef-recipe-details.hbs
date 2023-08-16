@@ -4,7 +4,7 @@
 			<img src="{{image}}" alt="{{name}}">
 
 			{{#if isFavorite}}
-			<form action="/user/chefs-favorite/deletes" method="POST">
+			<form action="/user/chefs-favorite/remove" method="POST">
 				<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
 				<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
 			</form>

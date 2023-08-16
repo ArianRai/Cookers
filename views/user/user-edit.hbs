@@ -3,7 +3,7 @@
 		<div class="col-md-6">
 			<h1>Edit User</h1>
 			<hr>
-			<form action="/user/{{_id}}/edit" method="POST" enctype="multipart/form-data">
+			<form action="/user/edit/{{_id}}" method="POST" enctype="multipart/form-data">
 				<div class="mb-3">
 					<label for="username" class="form-label">Nombre de usuario</label>
 					<input type="text" class="form-control" id="username" name="username" value="{{username}}">
@@ -13,16 +13,16 @@
 					<input type="email" class="form-control" id="email" name="email" value="{{email}}">
 				</div>
 				<div>
-				<label>Avatar:
-         			 <input type="file" id="avatar" name="avatar" class="form-control-file" value="{{avatar}}"/>
-        		</label>
+					<label>Avatar:
+						<input type="file" id="avatar" name="avatar" class="form-control-file" value="{{avatar}}" />
+					</label>
 				</div>
-                 {{#if userToEditRoles.isChef}}
+				{{#if userToEditRoles.isChef}}
 				<input type="submit" class="btn btn-success" value="Edit">
-                {{/if}}
-                 {{#if userToEditRoles.isUser}}
+				{{/if}}
+				{{#if userToEditRoles.isUser}}
 				<input type="submit" class="btn btn-success" value="Edit">
-                {{/if}}
+				{{/if}}
 			</form>
 		</div>
 	</div>

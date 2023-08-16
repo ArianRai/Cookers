@@ -1,20 +1,20 @@
 <div class="container">
 
-    <h3>Users List</h3>
+	<h3>Users List</h3>
 
-    <hr>
+	<hr>
 
-    <div class="row">
-        {{#each users}}
-        <div class="col-md-3 mb-3">
-            <figure class="user-card ">
-                <img src="{{avatar}}" alt="{{username}}">
-                <figcaption>{{username}}, {{email}}</figcaption>
-            </figure>
-            {{#if ../register}}
-            <p><a href="/user/{{_id}}/details">Details</a></p>
-            {{/if}}
-        </div>
-        {{/each}}
-    </div>
+	<div class="row">
+		{{#each users}}
+		<div class="col-md-3 mb-3">
+			<figure class="user-card ">
+				<img src="{{avatar}}" alt="{{username}}">
+				<figcaption>{{username}}, {{email}}</figcaption>
+			</figure>
+			{{#if ../register}}
+			<p><a href="/user/details/{{_id}}">Details</a></p>
+			{{/if}}
+		</div>
+		{{/each}}
+	</div>
 </div>

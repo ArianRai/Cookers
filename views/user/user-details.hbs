@@ -1,63 +1,49 @@
 <div class="container">
 
-	<h3>{{user.username}}</h3>
+    <h3>{{username}} Details</h3>
 
-	<hr>
+    <hr>
 
-	<div class="row">
+    <div class="row">
+       
 
+        <div class="col-md-3 mb-3">
+            <figure class="user-card ">
+                <img src="{{user.avatar}}" alt="{{user.username}}">
+                <figcaption>{{user.username}}, {{user.email}}</figcaption>
+            </figure>
+            {{!-- <p><a href="/user/{{_id}}/details">Details</a></p> --}}
+        </div>
+        <div class="col-md-3 mb-3">
+            <p>{{user.username}}</p>
+            <p>Role: {{user.role}}</p>
+           <p>Aki va los favoritos del Usuario</p> 
 
-		<div class="col-md-3 mb-3">
-			<figure class="user-card ">
-				<img src="{{user.avatar}}" alt="{{user.username}}">
-				<figcaption>{{user.username}}, {{user.email}}</figcaption>
-			</figure>
+            {{#if userRoles.isAdmin}}
+                <!-- DELETE USER -->
+                <form action="/user/delete/{{user._id}}" method="POST">
+                <button type="submit" class="btn btn-danger">Delete user</button>
+                </form>
 
-		</div>
-		<div class="col-md-3 mb-3">
-			<p>{{user.username}}</p>
-			<p>Role: {{user.role}}</p>
+                <!-- EDIT ROL USER-->
+                {{#if userToEditRoles.isChef}}
+                <form action="/user/edit-role/{{user._id}}/USER" method="POST">
+                <input type="submit" class="btn btn-secondary" name="checkRole" value="Make User">
+                </form>
+                {{/if}}            
+                {{#if userToEditRoles.isUser}}
+                <form action="/user/edit-role/{{user._id}}/CHEF" method="POST">
+                <input type="submit" class="btn btn-secondary" name="checkRole" value="Make Chef">
+                </form>
+                {{/if}}      
+            {{/if}}
 
-			{{#if userRoles.isAdmin}}
-			<!-- DELETE USER -->
-			<form action="/user/delete/{{user._id}}" method="POST">
-				<button type="submit" class="btn btn-danger">Delete user</button>
-			</form>
+            {{#unless userRoles.isAdmin}}
+                 <a href="/user/edit/{{user._id}}">Edit</a>
+            {{/unless}}
+            
+        </div>
 
-			<!-- EDIT ROL USER-->
-			{{#if userToEditRoles.isChef}}
-			<form action="/user/edit-role/{{user._id}}/USER" method="POST">
-				<input type="submit" class="btn btn-secondary" name="checkRole" value="Make User">
-			</form>
-			{{/if}}
-			{{#if userToEditRoles.isUser}}
-			<form action="/user/edit-role/{{user._id}}/CHEF" method="POST">
-				<input type="submit" class="btn btn-secondary" name="checkRole" value="Make Chef">
-			</form>
-			{{/if}}
-
-			{{/if}}
-
-			{{#if userRoles.isMyself}}
-			<a href="/user/edit/{{user._id}}">Editar</a>
-			{{/if}}
-
-		</div>
-		<ul class="list-group mt-3">
-			{{#each recipes}}
-			<li class="list-group-item pt-3 d-flex justify-content-between align-items-baseline">
-				<p>{{label}}</p>
-				<div class="row me-2">
-					<div class="col">
-						<form action="/recipe/details" method="POST">
-							<input type="text" name="recipe_uri" value="{{uri}}" hidden>
-							<input type="submit" class="btn btn-warning d-grid" value="Details">
-						</form>
-					</div>
-				</div>
-			</li>
-			{{/each}}
-		</ul>
-
-	</div>
+       
+    </div>
 </div>

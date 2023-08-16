@@ -2,6 +2,7 @@ const router = require('express').Router()
 const Recipe = require('../models/Recipe.model')
 const User = require('../models/User.model')
 const recipesApi = require('../services/recipe.service')
+const fileUploader = require('../config/cloudinary.config')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../utils/const-utils')
 
@@ -11,10 +12,14 @@ router.get('/create', (req, res, next) => {
 	res.render('recipes/create-form', { measureTypes, cuisineTypes, mealTypes })
 })
 
-router.post('/create', (req, res, next) => {
-	const { name, image, food, quantity, measure, cuisineType, mealType, totalTime } = req.body
+router.post('/create', fileUploader.single('image'), (req, res, next) => {
+	console.log(req.body)
+	const { name, food, quantity, measure, cuisineType, mealType, totalTime } = req.body
+	const { _id: user_id } = req.session.currentUser
 	const ingredients = []
 	const ingredientsLines = []
+
+	let image = req.file?.path
 
 	if (typeof food === 'object') {
 		food.forEach((elm, idx) => {
@@ -37,6 +42,7 @@ router.post('/create', (req, res, next) => {
 		cuisineType,
 		mealType,
 		totalTime,
+		owner: user_id
 	}
 	Recipe.create(recipeInfo)
 		.then(recipeCreated => res.send(recipeCreated))

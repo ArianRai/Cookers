@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const User = require('../models/User.model')
 const recipesApi = require('../services/recipe.service')
-
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
 const fileUploader = require('../config/cloudinary.config')
 const { response } = require('express')
@@ -77,7 +76,6 @@ router.get('/edit/:user_id', isLoggedIn, (req, res) => {
 router.post(
 	'/edit/:user_id',
 	isLoggedIn,
-	checkRoles('ADMIN'),
 	fileUploader.single('avatar'),
 	(req, res) => {
 		const { user_id } = req.params
@@ -85,7 +83,7 @@ router.post(
 		const { path: avatar } = req.file
 
 		User.findByIdAndUpdate(user_id, { username, email, avatar })
-			.then(user => res.redirect(`/user/${user._id}/details`))
+			.then(user => res.redirect(`/user/details/${user._id}`))
 			.catch(err => console.log(err))
 	}
 )
@@ -105,7 +103,7 @@ router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, 
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
-		.then(() => res.redirect(`/user/${user_id}/details`))
+		.then(() => res.redirect(`/user/details/${user_id}/`))
 		.catch(err => console.log(err))
 })
 

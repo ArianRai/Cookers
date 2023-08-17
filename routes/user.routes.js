@@ -122,7 +122,7 @@ router.post('/edit/:user_id', isLoggedIn, fileUploader.single('avatar'), (req, r
 	let avatar = req.file?.path
 
 	User.findByIdAndUpdate(user_id, { username, email, avatar })
-		.then(user => res.redirect(`/user/details/${user._id}`))
+		.then(user => res.redirect(`/user/details/${user._id}/fromApi`))
 		.catch(err => next(err))
 })
 

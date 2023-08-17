@@ -12,6 +12,7 @@ app.locals.appTitle = `Cookers & Chefs`
 const { updateloggedUser } = require('./middlewares/route-guard')
 app.use(updateloggedUser)
 
+
 require('./routes')(app)
 require('./error-handling')(app)
 

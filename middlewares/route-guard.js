@@ -1,6 +1,7 @@
 
 const updateloggedUser = (req, res, next) => {
     res.locals.loggedUser = req.session.currentUser
+	res.locals.isChef = req.session?.currentUser?.role === 'CHEF'
     next()
 }
 

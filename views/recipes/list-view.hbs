@@ -1,63 +1,89 @@
 <div class="container-fluid background-recipes p-layout">
-	<div class="container">
-		<h1 class="mb-3">Search recipes</h1>
-		<form action="/recipe/list" method="POST">
-			<div class="row">
-				<div class="mb-3 col-3">
-					<label for="ingredientInput" class="form-label">Ingredient</label>
-					<input type="text" class="form-control" id="ingredientInput" name="food">
+	<div class="container-fluid px-2">
+		<div class="row mx-0">
+			<div class="col">
+				<div class="view_title_list">
+					<h4>Search recipes</h4>
+					<hr>
 				</div>
-				<div class="col-2">
-					<label for="caloriesInput" class="form-label">Max Calories</label>
-					<input type="number" min="0" class="form-control" id="caloriesInput" name="calories">
-				</div>
-				<div class="col-3">
-					<label for="cuisineType" class="form-label">Cuisine Type</label>
-					<select size="1" class="form-select" id="--" name="cuisineType">
-						<option value="">Cuisine</option>
-						{{#each cuisineTypes}}
-						<option value="{{this}}">{{this}}</option>
-						{{/each}}
-					</select>
-				</div>
-				<div class="col-3">
-					<label for="--" class="form-label">Meal Type</label>
-					<select size="1" class="form-select" id="--" name="mealType">
-						<option value="">Meal Type</option>
-						{{#each mealTypes}}
-						<option value="{{this}}">{{this}}</option>
-						{{/each}}
-					</select>
-				</div>
-				<div class="col-11 mb-4">
-					{{#if errorMsg}}
-					<div class="p-3" id="error">
-						{{errorMsg}}
-					</div>
-					{{/if}}
-				</div>
-			</div>
-			<input class="mb-4 btn btn-success" type="submit" value="Filter recipes">
-		</form>
-
-		<div class="row justify-content-center mb-5">
-			<div class="col-9">
-				<h2>Recipe List</h2>
-				<ul class="list-group mt-3">
-					{{#each recipes}}
-					<li class="list-group-item pt-3 d-flex justify-content-between align-items-baseline">
-						<p>{{recipe.label}}</p>
-						<div class="row me-2">
-							<div class="col">
-								<form action="/recipe/details" method="POST">
-									<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
-									<input type="submit" class="btn btn-warning d-grid" value="Details">
-								</form>
-							</div>
+				<form action="/recipe/list" method="POST">
+					<div class="row">
+						<div class="mb-3 col-10">
+							<label for="ingredientInput" class="form-label">Ingredient</label>
+							<input type="text" class="form-control" id="ingredientInput" name="food">
 						</div>
-					</li>
-					{{/each}}
-				</ul>
+					</div>
+					<div class="row">
+						<div class="col-10">
+							<label for="caloriesInput" class="form-label">Max Calories</label>
+							<input type="number" min="0" class="form-control" id="caloriesInput" name="calories">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-10">
+							<label for="cuisineType" class="form-label">Cuisine Type</label>
+							<select size="1" class="form-select" id="--" name="cuisineType">
+								<option value="">Cuisine</option>
+								{{#each cuisineTypes}}
+								<option value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-10">
+							<label for="--" class="form-label">Meal Type</label>
+							<select size="1" class="form-select" id="--" name="mealType">
+								<option value="">Meal Type</option>
+								{{#each mealTypes}}
+								<option value="{{this}}">{{this}}</option>
+								{{/each}}
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-11 mb-4">
+							{{#if errorMsg}}
+							<div class="p-3" id="error">
+								{{errorMsg}}
+							</div>
+							{{/if}}
+						</div>
+					</div>
+					<input class="mb-4 btn btn-success" type="submit" value="Filter recipes">
+				</form>
+
+			</div>
+			<div class="col-9 list-view">
+				<div class="row justify-content-center mb-5">
+					<div class="col-12">
+						<div class="view_title_list">
+							<h4>Recipes list</h4>
+							<hr>
+							{{#unless recipes}}
+							<p class="text-white">Enter your search terms to get the list of recipes</p>
+							{{/unless}}
+						</div>
+						<ul class="list-group mt-3">
+							{{#each recipes}}
+							<li
+								class="list-group-item pt-3 d-flex justify-content-between align-items-baseline bg-transparent text-white border-0">
+								<p>{{recipe.label}}</p>
+								<div class="row me-2">
+									<div class="col">
+										<form action="/recipe/details" method="POST">
+											<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
+											<input type="submit" class="btn button-list-details d-grid px-2 py-1"
+												value="Details">
+										</form>
+									</div>
+								</div>
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

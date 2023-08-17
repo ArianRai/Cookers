@@ -16,7 +16,7 @@
 					<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
 				</form>
 				{{/if}}
-
+				<a href="/recipe/list" class="btn btn-dark mt-3">Search more recipes</a>
 			</div>
 			<div class="col">
 				<div class="row flex-column">
@@ -38,6 +38,25 @@
 				</div>
 			</div>
 		</div>
-		<a href="/recipe/list" class="btn btn-dark mb-5">Back to search</a>
+		<div class="row">
+			<form action="/review/create/{{recipe._id}}" method="POST">
+				<label for="ratingInput">Rating</label>
+				<input type="number" name="rating" id="ratingInput" min="0" max="10">
+				<label for="commentInput">Review</label>
+				<textarea name="comment" id="commentInput" cols="30" rows="3"></textarea>
+				<input type="submit" value="Create Review">
+			</form>
+		</div>
+		<div class="row my-3">
+			<p>Reviews</p>
+			<ul>
+				{{#each reviews}}
+				<li>
+					<p>Rating: {{rating}}</p>
+					<p> {{comment}} - {{owner.username}}</p>
+				</li>
+				{{/each}}
+			</ul>
+		</div>
 	</div>
 </div>

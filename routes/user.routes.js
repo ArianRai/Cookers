@@ -11,15 +11,9 @@ router.get('/list', (req, res, next) => {
 
 	User.find()
 		.then(users => {
-			const allUsers = []
-			const allChefs = []
-			users.forEach(elm => {
-				if (elm.role === 'USER') {
-					allUsers.push(elm)
-				} else if (elm.role === 'CHEF') {
-					allChefs.push(elm)
-				}
-			})
+			const allUsers = users.filter(elm => elm.role === 'USER')
+			const allChefs = users.filter(elm => elm.role === 'CHEF')
+
 			if (req.session.currentUser) {
 				register = true
 			}
@@ -171,9 +165,11 @@ router.post('/favorite/:action', (req, res, next) => {
 			isFavorite = false
 		}
 
-		User.findByIdAndUpdate(user_id, updateData).then(() => {
-			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
-		})
+		User.findByIdAndUpdate(user_id, updateData)
+			.then(() => {
+				res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+			})
+			.catch(err => next(err))
 	})
 })
 
@@ -193,9 +189,11 @@ router.post('/chefs-favorite/:action', (req, res, next) => {
 	}
 
 	User.findByIdAndUpdate(user_id, updateData).then(() =>
-		Recipe.findById(recipe_id).then(recipe => {
-			res.render('recipes/chef-recipe-details', { recipe, isFavorite })
-		})
+		Recipe.findById(recipe_id)
+			.then(recipe => {
+				res.render('recipes/chef-recipe-details', { recipe, isFavorite })
+			})
+			.catch(err => next(err))
 	)
 })
 

@@ -34,8 +34,11 @@ const cuisineTypes = [
 	'South East Asian',
 ]
 
+const recipeLimit = 5
+
 module.exports = {
 	measureTypes,
 	cuisineTypes,
 	mealTypes,
+	recipeLimit,
 }

@@ -1,5 +1,5 @@
 const axios = require('axios')
-const { cuisineTypes } = require('../utils/const-utils')
+const { cuisineTypes } = require('../consts/recipe-consts')
 
 class RecipeApiHandler {
 	constructor() {

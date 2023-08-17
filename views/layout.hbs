@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,50 +10,51 @@
 	<link rel="stylesheet" href="/stylesheets/style.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 </head>
+
 <body>
-		<nav class="navbar navbar-expand-lg  ml-auto navbar-dark mb-2 pt-0">
-			<div class="container-fluid align-items-start">
-				<a class="navbar-brand" href="/"><img src="/images/logo.png" class="logo mx-2"></a>
+	<nav class="navbar navbar-expand-lg  ml-auto navbar-dark mb-2 pt-0">
+		<div class="container-fluid align-items-start">
+			<a class="navbar-brand" href="/"><img src="/images/logo.png" class="logo mx-2"></a>
 
-				<div class="collapse navbar-collapse bg-cookers" id="navbarSupportedContent">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
-						<li class="nav-item">
-							<a class="nav-link menu_color" href="/recipe/list">Recipe List</a>
-						</li>
-						{{#if loggedUser}}
-						<li class="nav-item">
-							<a class="nav-link menu_color" href="/recipe/chefs-list">Recipes from Chefs</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link menu_color" href="/recipe/create">Create Recipe</a>
-						</li>
+			<div class="collapse navbar-collapse bg-cookers" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 menu">
+					<li class="nav-item">
+						<a class="nav-link menu_color" href="/recipe/list">Recipe List</a>
+					</li>
+					{{#if loggedUser}}
+					<li class="nav-item">
+						<a class="nav-link menu_color" href="/recipe/chefs-list/none">Recipes from Chefs</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link menu_color" href="/recipe/create">Create Recipe</a>
+					</li>
 
-						<li class="nav-item">
-							<a class="nav-link menu_color" href="/user/list">Users List</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-								data-bs-toggle="dropdown" aria-expanded="false">
-								Welcome <img src="{{loggedUser.avatar}}">
-							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<li><a class="dropdown-item" href="/user/details/{{loggedUser._id}}/fromApi">My
-										Profile</a></li>
-								<li><a class="dropdown-item" href="/auth/logout">Cerrar sesión</a></li>
-							</ul>
-						</li>
-						{{else}}
-						<li class="nav-item"><a class="nav-link menu_color" href="/auth/signup">Sing up</a></li>
-						<li class="nav-item"><a class="nav-link menu_color" href="/auth/login">Log in</a></li>
-						{{/if}}
-					</ul>
+					<li class="nav-item">
+						<a class="nav-link menu_color" href="/user/list">Users List</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+							data-bs-toggle="dropdown" aria-expanded="false">
+							Welcome <img src="{{loggedUser.avatar}}">
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<li><a class="dropdown-item" href="/user/details/{{loggedUser._id}}/fromApi">My
+									Profile</a></li>
+							<li><a class="dropdown-item" href="/auth/logout">Cerrar sesión</a></li>
+						</ul>
+					</li>
+					{{else}}
+					<li class="nav-item"><a class="nav-link menu_color" href="/auth/signup">Sing up</a></li>
+					<li class="nav-item"><a class="nav-link menu_color" href="/auth/login">Log in</a></li>
+					{{/if}}
+				</ul>
 
-				</div>
 			</div>
-		</nav>
-		{{{body}}}
-		<script src="/js/script.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+		</div>
+	</nav>
+	{{{body}}}
+	<script src="/js/script.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

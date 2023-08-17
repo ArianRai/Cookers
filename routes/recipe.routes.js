@@ -90,7 +90,7 @@ router.post('/details', (req, res, next) => {
 	Promise.all(promises)
 		.then(([user, data]) => {
 			const isFavorite = user.favoritesFromAPI.includes(recipe_uri)
-			let { recipe } = data
+			let { recipe } = data.data
 			const calories = Math.round(recipe.calories / recipe.yield)
 			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
 		})

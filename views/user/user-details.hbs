@@ -26,12 +26,12 @@
 				<!-- EDIT ROL USER-->
 				{{#if userToEditRoles.isChef}}
 				<form action="/user/edit-role/{{user._id}}/USER" method="POST">
-					<input type="submit" class="btn btn-secondary" name="checkRole" value="Make User">
+					<input type="submit" class="btn btn-secondary" name="role" value="Make User">
 				</form>
 				{{/if}}
 				{{#if userToEditRoles.isUser}}
 				<form action="/user/edit-role/{{user._id}}/CHEF" method="POST">
-					<input type="submit" class="btn btn-secondary" name="checkRole" value="Make Chef">
+					<input type="submit" class="btn btn-secondary" name="role" value="Make Chef">
 				</form>
 				{{/if}}
 				{{/if}}
@@ -48,7 +48,10 @@
 				{{#if recipesFromApi}}
 				<h5>Favorite recipes from API</h5>
 				<hr>
-				<div class="row">
+				<div class="col-3 mb-4">
+					<a href="/user/details/{{user.id}}/fromChefs"
+						class="button-list-details border-0 fs-6 px-3">Favorites from
+						Chefs</a>
 				</div>
 				<ul class="list-group mt-1 list-favorites mb-3">
 					{{#each recipesFromApi}}
@@ -66,28 +69,24 @@
 					</li>
 					{{/each}}
 				</ul>
-				<div class="col-3">
-					<a href="/user/details/{{user.id}}/fromChefs"
-						class="button-list-details border-0 fs-6 px-3">Favorites from Chefs</a>
-				</div>
 				{{/if}}
 				{{#if recipesFromChefs}}
-				<h3>Favorite recipes from Chefs</h3>
-				<div class="row">
-					<div class="col-3">
-						<a href="/user/details/{{user.id}}/fromApi" class="btn btn-dark d-block">Favorites from API</a>
-					</div>
+				<h5>Favorite recipes from Chefs</h5>
+				<hr>
+				<div class="col-3 mb-4">
+					<a href="/user/details/{{user.id}}/fromApi" class="button-list-details border-0 fs-6 px-3">Favorites
+						from API</a>
 				</div>
-				<ul class="list-group mt-3">
+				<ul class="list-group mt-1 list-favorites mb-3">
 					{{#each recipesFromChefs}}
 					<li
 						class="list-group-item pt-3 d-flex justify-content-between align-items-baseline bg-transparent text-white ">
-						<p>{{name}} - Chef: <a class="btn btn-light" href="#"></a></p>
+						<p>{{name}} - Chef: <a class="btn btn-light" href="#">{{owner.username}}</a></p>
 						<div class="row me-2">
 							<div class="col">
 								<form action="/recipe/recipe-chef-details" method="POST">
 									<input type="text" name="id" value="{{id}}" hidden>
-									<input type="submit" class="btn btn-warning d-grid" value="Details">
+									<input type="submit" class="button-list-details border-0 fs-6 px-2" value="Details">
 								</form>
 							</div>
 						</div>

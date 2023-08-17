@@ -7,7 +7,11 @@ const recipeSchema = new Schema(
 			trim: true,
 			unique: true,
 		},
-		image: { type: String, default: 'RECETAIMGPORDEFECTO' },
+		image: {
+			type: String,
+			default:
+				'https://res.cloudinary.com/dwuetntc4/image/upload/v1692287051/avatar/vjdfag3awsivinsaitdh.jpg',
+		},
 		ingredientsLines: [String],
 		ingredients: [
 			{

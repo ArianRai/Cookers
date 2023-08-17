@@ -1,15 +1,14 @@
-
 const updateloggedUser = (req, res, next) => {
-    res.locals.loggedUser = req.session.currentUser
+	res.locals.loggedUser = req.session.currentUser
 	res.locals.isChef = req.session?.currentUser?.role === 'CHEF'
-    next()
+	next()
 }
 
 const isLoggedIn = (req, res, next) => {
 	if (req.session.currentUser) {
 		next()
 	} else {
-		res.redirect('/login?err=Login to access')
+		res.redirect('/auth/login?err=Login to access')
 	}
 }
 

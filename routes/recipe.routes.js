@@ -6,6 +6,7 @@ const recipesApi = require('../services/recipe.service')
 const fileUploader = require('../config/cloudinary.config')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../consts/recipe-consts')
+const { isLoggedIn } = require('../middlewares/route-guard')
 
 router.get('/create', (req, res, next) => {
 	res.render('recipes/create-form', { measureTypes, cuisineTypes, mealTypes })
@@ -41,7 +42,7 @@ router.post('/create', fileUploader.single('image'), (req, res, next) => {
 		owner: user_id,
 	}
 	Recipe.create(recipeInfo)
-		.then(recipeCreated => res.send(recipeCreated))
+		.then(() => res.redirect(`/recipe/chefs-list/${user_id}`))
 		.catch(error => {
 			if (error._message) {
 				res.render('recipes/create-form', {
@@ -80,7 +81,7 @@ router.post('/list', (req, res, next) => {
 		.catch(err => next(err))
 })
 
-router.post('/details', (req, res, next) => {
+router.post('/details', isLoggedIn, (req, res, next) => {
 	const { recipe_uri } = req.body
 	const recipe_id = recipe_uri.split('_')[1]
 	const { _id: user_id } = req.session.currentUser
@@ -90,7 +91,7 @@ router.post('/details', (req, res, next) => {
 	Promise.all(promises)
 		.then(([user, data]) => {
 			const isFavorite = user.favoritesFromAPI.includes(recipe_uri)
-			let { recipe } = data
+			let { recipe } = data.data
 			const calories = Math.round(recipe.calories / recipe.yield)
 			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
 		})

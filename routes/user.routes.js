@@ -62,9 +62,11 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 			} else if (action === 'fromChefs') {
 				if (user.favoritesFromChefs.length !== 0) {
 					const promises2 = user.favoritesFromChefs.map(eachId => {
-						return Recipe.findById(eachId).then(recipe => {
-							return recipe
-						})
+						return Recipe.findById(eachId)
+							.populate('owner')
+							.then(recipe => {
+								return recipe
+							})
 					})
 					Promise.all(promises2).then(response => {
 						res.render('user/user-details', {
@@ -141,7 +143,7 @@ router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, 
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
-		.then(() => res.redirect(`/user/details/${user_id}`))
+		.then(() => res.redirect(`/user/details/${user_id}/fromMySelf`))
 		.catch(err => next(err))
 })
 

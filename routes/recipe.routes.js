@@ -99,6 +99,7 @@ router.post('/details', (req, res, next) => {
 
 router.get('/chefs-list', (req, res, next) => {
 	Recipe.find()
+		.populate('owner')
 		.then(response => res.render('recipes/chefs-recipes-list', { recipes: response }))
 		.catch(err => next(err))
 })

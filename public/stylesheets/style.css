@@ -60,7 +60,6 @@ border-bottom-left-radius: 10px;
 	width: 18rem;
 }
 
-
 .menu{
 	justify-content: flex-end;
 	font-size: 1.2rem;
@@ -118,13 +117,19 @@ border-bottom-left-radius: 10px;
 }
 
 
-.list-view, .login-view, .list-favorites{
+.list-view, .login-view, .list-favorites, .list-carrusel{
 	height:72vh;
 	overflow: scroll;
 	padding: 2%;
 	background-color: rgba(25, 26, 25, 0.9);
 	border-radius: 2%;
 	margin-right: 1%;
+}
+
+.list-carrusel{
+	padding: 5%;
+	height:67vh;
+	background-color: rgba(25, 26, 26, 0.5);
 }
 
 .list-favorites{
@@ -174,6 +179,21 @@ border-bottom-left-radius: 10px;
 	color:#5cccf1;
 }
 
+/* Button index */
+.button-list-carrussel{
+	background-color: transparent;
+	padding: 2%;
+	border-radius: 5px;
+	border: 1px solid #fff;
+	text-decoration: none;
+	color:#FFF;
+}
+.button-list-carrussel:hover{
+	background-color: transparent;
+	color:#5cccf1;
+}
+
+
 .card-text.email{
 	color:#8edcf3;
 }
@@ -194,5 +214,20 @@ border-bottom-left-radius: 10px;
   .name-user-details{
 	font-size: 2rem;
 	color:#5cccf1;
+  }
+
+
+  /* carrussel */ 
+
+  .carousel-item{
+  }
+
+  .carousel-item img{
+	margin: 0 auto;
+	border-radius: 10px;
+  }
+
+  .carousel.slide{
+	margin-top: -30px;
   }
 

@@ -14,9 +14,7 @@ router.get('/list', (req, res, next) => {
 		.then(users => {
 			const allUsers = []
 			const allChefs = []
-
 			users.forEach(elm => {
-				console.log(elm.role)
 				if (elm.role === 'USER') {
 					allUsers.push(elm)
 				} else if (elm.role === 'CHEF') {
@@ -27,7 +25,6 @@ router.get('/list', (req, res, next) => {
 			if (req.session.currentUser) {
 				register = true
 			}
-
 			res.render('user/user-list', { users, register, allUsers, allChefs })
 		})
 		.catch(err => next(err))
@@ -36,7 +33,6 @@ router.get('/list', (req, res, next) => {
 // User detail
 router.get('/details/:user_id/:action', (req, res, next) => {
 	const { user_id, action } = req.params
-
 	const userRoles = {
 		isAdmin: req.session.currentUser?.role === 'ADMIN',
 		isMyself: req.session.currentUser?._id === user_id,
@@ -48,7 +44,6 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-
 			if (action === 'fromApi') {
 				if (user.favoritesFromAPI.length !== 0) {
 					const promises1 = user.favoritesFromAPI.map(eachURI => {
@@ -149,11 +144,12 @@ router.post('/delete/:user_id', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 })
 
 // Change Role
+
 router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
-		.then(() => res.redirect(`/user/details/${user_id}/`))
+		.then(() => res.redirect(`/user/details/${user_id}`))
 		.catch(err => console.log(err))
 })
 
@@ -190,7 +186,6 @@ router.post('/chefs-favorite/:action', (req, res, next) => {
 	const { recipe_id } = req.body
 	const { action } = req.params
 
-	// console.log(req.body)
 
 	if (action === 'add') {
 		User.findByIdAndUpdate(user_id, { $push: { favoritesFromChefs: recipe_id } }).then(() =>

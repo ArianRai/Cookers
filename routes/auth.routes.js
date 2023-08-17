@@ -1,16 +1,15 @@
 const router = require('express').Router()
 const bcrypt = require('bcryptjs')
 const User = require('../models/User.model')
-
 const fileUploader = require('../config/cloudinary.config')
-
 const saltRounds = 10
 
+// Render SignUP
 router.get('/signup', (req, res, next) => res.render('auth/signup-form'))
 
+// Handler SignUP
 router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
 	const { username, email, plainPassword } = req.body
-
 	let avatar = req.file?.path
 
 	bcrypt
@@ -21,10 +20,13 @@ router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
 		.catch(error => next(error))
 })
 
+// Render Login
 router.get('/login', (req, res, next) => {
 	const { err: errorMessage } = req.query
 	res.render('auth/login-form', { errorMessage })
 })
+
+// Handler Login
 router.post('/login', (req, res, next) => {
 	const { email, plainPassword } = req.body
 

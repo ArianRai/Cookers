@@ -13,7 +13,6 @@ router.get('/list', (req, res, next) => {
 		.then(users => {
 			const allUsers = []
 			const allChefs = []
-
 			users.forEach(elm => {
 				if (elm.role === 'USER') {
 					allUsers.push(elm)
@@ -24,7 +23,6 @@ router.get('/list', (req, res, next) => {
 			if (req.session.currentUser) {
 				register = true
 			}
-
 			res.render('user/user-list', { users, register, allUsers, allChefs })
 		})
 		.catch(err => next(err))
@@ -33,7 +31,6 @@ router.get('/list', (req, res, next) => {
 // User detail
 router.get('/details/:user_id/:action', (req, res, next) => {
 	const { user_id, action } = req.params
-
 	const userRoles = {
 		isAdmin: req.session.currentUser?.role === 'ADMIN',
 		isMyself: req.session.currentUser?._id === user_id,
@@ -45,7 +42,6 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 				isUser: user.role === 'USER',
 				isChef: user.role === 'CHEF',
 			}
-
 			if (action === 'fromApi') {
 				if (user.favoritesFromAPI.length !== 0) {
 					const promises1 = user.favoritesFromAPI.map(eachURI => {
@@ -151,7 +147,7 @@ router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, 
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
-		.then(() => res.redirect(`/user/details/${user_id}/`))
+		.then(() => res.redirect(`/user/details/${user_id}`))
 		.catch(err => next(err))
 })
 

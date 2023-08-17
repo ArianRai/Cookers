@@ -51,8 +51,25 @@ min-height: 60px;
 border-top-left-radius: 10px;
 border-bottom-left-radius: 10px;
 }
+
+.bg-cookers_drop{
+	background: rgb(2,0,36, 0.7);
+	background: linear-gradient(90deg, rgba(2,0,36,0.7) 0%, rgba(51,51,51,0.7) 44%);
+	}
+.dropdown-item{
+	color: #8edcf3;
+}
+.dropdown-item:hover {
+    color: #FFF;
+    background-color: transparent;
+}
 .navbar-collapse{
 	flex-grow: 0;  
+}
+
+.dropdown-menu[data-bs-popper] {
+    top: 112%;
+    left: 0;
 }
 
 
@@ -117,7 +134,7 @@ border-bottom-left-radius: 10px;
 }
 
 
-.list-view, .login-view, .list-favorites, .list-carrusel, .list-create{
+.list-view, .login-view, .list-favorites, .list-carrusel, .list-create, .recipes_view{
 	height:72vh;
 	overflow: scroll;
 	padding: 2%;
@@ -237,5 +254,27 @@ border-bottom-left-radius: 10px;
 
   .ml-button{
 	margin-left:40%;
+  }
+
+  .recipes-view{
+	width: 60%;
+  }
+
+  .img_recipes{
+	width: 95%;
+	border: 6px solid #5cccf1;
+	border-radius: 10px;
+  }
+  .list-rating{
+	list-style: none;
+  }
+  .rating{
+	background-color: #FFF;
+	border: 3px solid #5cccf1;
+	border-radius: 50%;
+    width: 40px;
+    height: 40px;
+	color: #078eb7;
+	text-align: center;
   }
 

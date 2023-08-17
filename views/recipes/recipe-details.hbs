@@ -1,40 +1,43 @@
-<div class="container mb-5">
-	<div class="row">
-		<div class="col-3">
-			<img src="{{recipe.image}}" alt="{{recipe.label}}">
-			{{#if isFavorite}}
-			<form action="/user/favorite/remove" method="POST">
-				<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
-				<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
-			</form>
-			{{else}}
-			<form action="/user/favorite/add" method="POST">
-				<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
-				<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
-			</form>
-			{{/if}}
-		</div>
-		<div class="col">
-			<div class="row flex-column">
-				<h2>{{recipe.label}}</h2>
-				<hr>
-				<p><strong>Calories/serving: </strong>{{calories}}</p>
-				<p><strong>Servings: </strong>{{recipe.yield}}</p>
-				<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
-				<p>{{#each recipe.ingredients}}
-					{{food}} |
-					{{/each}}
-				</p>
-				<h4>Ingredients</h4>
-				<div class="container">
-					<ul>
-						{{#each recipe.ingredientLines}}
-						<li>{{this}}</li>
+
+<div class="container-fluid background-recipes p-layout"></div>
+	<div class="container mb-5">
+		<div class="row">
+			<div class="col-3">
+				<img src="{{recipe.image}}" alt="{{recipe.label}}">
+				{{#if isFavorite}}
+				<form action="/user/favorite/remove" method="POST">
+					<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
+					<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
+				</form>
+				{{else}}
+				<form action="/user/favorite/add" method="POST">
+					<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
+					<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
+				</form>
+				{{/if}}
+			</div>
+			<div class="col">
+				<div class="row flex-column">
+					<h2>{{recipe.label}}</h2>
+					<hr>
+					<p><strong>Calories/serving: </strong>{{calories}}</p>
+					<p><strong>Servings: </strong>{{recipe.yield}}</p>
+					<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
+					<p>{{#each recipe.ingredients}}
+						{{food}} |
 						{{/each}}
-					</ul>
+					</p>
+					<h4>Ingredients</h4>
+					<div class="container">
+						<ul>
+							{{#each recipe.ingredientLines}}
+							<li>{{this}}</li>
+							{{/each}}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
+		<a href="/recipe/list" class="btn btn-dark mb-5">Back to search</a>
 	</div>
-	<a href="/recipe/list" class="btn btn-dark mb-5">Back to search</a>
 </div>

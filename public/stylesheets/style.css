@@ -30,17 +30,17 @@ h1 {
 	width: 100%;
 }
 .background-index{
-	/* background-image: url('/images/background-index.jpg'); */
+	background-image: url('/images/background-index.jpg');
 	height: 100vh;
 	background-size: cover;
 } 
 .background-recipes{
-	/* background-image: url('/images/background-recipes.jpg'); */
+	background-image: url('/images/background-recipes.jpg');
 	height: 100vh;
 	background-size: cover;
 } 
 .background-list, .background-user{
-	/* background-image: url('/images/background-user.jpg'); */
+	background-image: url('/images/background-user.jpg');
 	height: 100vh;
 	background-size: cover;
 } 

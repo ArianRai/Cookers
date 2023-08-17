@@ -1,40 +1,43 @@
-<div class="container mb-5">
-	<div class="row">
-		<div class="col-3">
-			<img src="{{recipe.image}}" alt="{{recipe.name}}">
+<div class="container-fluid background-recipes p-layout">
 
-			{{#if isFavorite}}
-			<form action="/user/chefs-favorite/remove" method="POST">
-				<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
-				<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
-			</form>
-			{{else}}
-			<form action="/user/chefs-favorite/add" method="POST">
-				<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
-				<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
-			</form>
-			{{/if}}
+	<div class="container mb-5">
+		<div class="row">
+			<div class="col-3">
+				<img src="{{recipe.image}}" alt="{{recipe.name}}">
 
-		</div>
-		<div class="col">
-			<div class="row flex-column">
-				<h2>{{recipe.name}}</h2>
-				<hr>
-				<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
-				<p>{{#each recipe.ingredients}}
-					{{food}} |
-					{{/each}}
-				</p>
-				<h4>Ingredients</h4>
-				<div class="container">
-					<ul>
-						{{#each recipe.ingredientsLines}}
-						<li>{{this}}</li>
+				{{#if isFavorite}}
+				<form action="/user/chefs-favorite/remove" method="POST">
+					<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
+					<input type="submit" class="btn btn-danger d-grid mt-4" value="Delete favorite">
+				</form>
+				{{else}}
+				<form action="/user/chefs-favorite/add" method="POST">
+					<input type="text" name="recipe_id" value="{{recipe.id}}" hidden>
+					<input type="submit" class="btn btn-success d-grid mt-4" value="Add favorite">
+				</form>
+				{{/if}}
+
+			</div>
+			<div class="col">
+				<div class="row flex-column">
+					<h2>{{recipe.name}}</h2>
+					<hr>
+					<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
+					<p>{{#each recipe.ingredients}}
+						{{food}} |
 						{{/each}}
-					</ul>
+					</p>
+					<h4>Ingredients</h4>
+					<div class="container">
+						<ul>
+							{{#each recipe.ingredientsLines}}
+							<li>{{this}}</li>
+							{{/each}}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>
+		<a href="/recipe/list" class="btn btn-dark mb-5">Back to search</a>
 	</div>
-	<a href="/recipe/list" class="btn btn-dark mb-5">Back to search</a>
 </div>

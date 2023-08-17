@@ -1,10 +1,9 @@
 const router = require('express').Router()
 const User = require('../models/User.model')
+const Recipe = require('../models/Recipe.model')
 const recipesApi = require('../services/recipe.service')
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
 const fileUploader = require('../config/cloudinary.config')
-const { response } = require('express')
-const Recipe = require('../models/Recipe.model')
 
 // Users List
 router.get('/list', (req, res, next) => {
@@ -16,14 +15,12 @@ router.get('/list', (req, res, next) => {
 			const allChefs = []
 
 			users.forEach(elm => {
-				console.log(elm.role)
 				if (elm.role === 'USER') {
 					allUsers.push(elm)
 				} else if (elm.role === 'CHEF') {
 					allChefs.push(elm)
 				}
 			})
-			console.log(allChefs)
 			if (req.session.currentUser) {
 				register = true
 			}
@@ -69,6 +66,7 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 						user,
 						userRoles,
 						userToEditRoles,
+						recipesFromApi: true,
 					})
 				}
 			} else if (action === 'fromChefs') {
@@ -79,7 +77,6 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 						})
 					})
 					Promise.all(promises2).then(response => {
-						console.log(response)
 						res.render('user/user-details', {
 							user,
 							userRoles,
@@ -92,6 +89,7 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 						user,
 						userRoles,
 						userToEditRoles,
+						recipesFromChefs: true,
 					})
 				}
 			} else if (action === 'fromMySelf') {
@@ -118,43 +116,43 @@ router.get('/details/:user_id/:action', (req, res, next) => {
 
 // Render Edit
 
-router.get('/edit/:user_id', isLoggedIn, (req, res) => {
+router.get('/edit/:user_id', isLoggedIn, (req, res, next) => {
 	const { user_id } = req.params
 
 	User.findById(user_id)
 		.then(user => res.render('user/user-edit', user))
-		.catch(err => console.log(err))
+		.catch(err => next(err))
 })
 
 // Handler Edit
 
-router.post('/edit/:user_id', isLoggedIn, fileUploader.single('avatar'), (req, res) => {
+router.post('/edit/:user_id', isLoggedIn, fileUploader.single('avatar'), (req, res, next) => {
 	const { user_id } = req.params
 	const { username, email } = req.body
-	const { path: avatar } = req.file
+	let avatar = req.file?.path
 
 	User.findByIdAndUpdate(user_id, { username, email, avatar })
 		.then(user => res.redirect(`/user/details/${user._id}`))
-		.catch(err => console.log(err))
+		.catch(err => next(err))
 })
 
 // Delete User
 
-router.post('/delete/:user_id', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+router.post('/delete/:user_id', isLoggedIn, checkRoles('ADMIN'), (req, res, next) => {
 	const { user_id } = req.params
 
 	User.findByIdAndDelete(user_id)
 		.then(() => res.redirect(`/user/list`))
-		.catch(err => console.log(err))
+		.catch(err => next(err))
 })
 
 // Change Role
-router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, res) => {
+router.post('/edit-role/:user_id/:role', isLoggedIn, checkRoles('ADMIN'), (req, res, next) => {
 	const { user_id, role } = req.params
 
 	User.findByIdAndUpdate(user_id, { role })
 		.then(() => res.redirect(`/user/details/${user_id}/`))
-		.catch(err => console.log(err))
+		.catch(err => next(err))
 })
 
 router.post('/favorite/:action', (req, res, next) => {
@@ -167,21 +165,19 @@ router.post('/favorite/:action', (req, res, next) => {
 		let { recipe } = response.data
 		const calories = Math.round(recipe.calories / recipe.yield)
 
+		let updateData, isFavorite
+
 		if (action === 'add') {
-			User.findByIdAndUpdate(user_id, { $push: { favoritesFromAPI: recipe_uri } }).then(
-				() => {
-					res.render('recipes/recipe-details', { recipe, calories, isFavorite: true })
-				}
-			)
+			updateData = { $push: { favoritesFromAPI: recipe_uri } }
+			isFavorite = true
+		} else if (action === 'remove') {
+			updateData = { $pull: { favoritesFromAPI: recipe_uri } }
+			isFavorite = false
 		}
 
-		if (action === 'remove') {
-			User.findByIdAndUpdate(user_id, { $pull: { favoritesFromAPI: recipe_uri } }).then(
-				() => {
-					res.render('recipes/recipe-details', { recipe, calories, isFavorite: false })
-				}
-			)
-		}
+		User.findByIdAndUpdate(user_id, updateData).then(() => {
+			res.render('recipes/recipe-details', { recipe, calories, isFavorite })
+		})
 	})
 })
 
@@ -190,23 +186,21 @@ router.post('/chefs-favorite/:action', (req, res, next) => {
 	const { recipe_id } = req.body
 	const { action } = req.params
 
-	// console.log(req.body)
+	let updateData, isFavorite
 
 	if (action === 'add') {
-		User.findByIdAndUpdate(user_id, { $push: { favoritesFromChefs: recipe_id } }).then(() =>
-			Recipe.findById(recipe_id).then(recipe => {
-				res.render('recipes/chef-recipe-details', { recipe, isFavorite: true })
-			})
-		)
+		updateData = { $push: { favoritesFromChefs: recipe_id } }
+		isFavorite = true
+	} else if (action === 'remove') {
+		updateData = { $pull: { favoritesFromChefs: recipe_id } }
+		isFavorite = false
 	}
 
-	if (action === 'remove') {
-		User.findByIdAndUpdate(user_id, { $pull: { favoritesFromChefs: recipe_id } }).then(() =>
-			Recipe.findById(recipe_id).then(recipe => {
-				res.render('recipes/chef-recipe-details', { recipe, isFavorite: false })
-			})
-		)
-	}
+	User.findByIdAndUpdate(user_id, updateData).then(() =>
+		Recipe.findById(recipe_id).then(recipe => {
+			res.render('recipes/chef-recipe-details', { recipe, isFavorite })
+		})
+	)
 })
 
 module.exports = router

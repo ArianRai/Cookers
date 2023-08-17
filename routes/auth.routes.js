@@ -9,19 +9,14 @@ const saltRounds = 10
 router.get('/signup', (req, res, next) => res.render('auth/signup-form'))
 
 router.post('/signup', fileUploader.single('avatar'), (req, res, next) => {
-	// const { username, email, plainPassword, role, avatar } = req.body
 	const { username, email, plainPassword } = req.body
-	// const { path: avatar } = req.file
 
 	let avatar = req.file?.path
 
 	bcrypt
 		.genSalt(saltRounds)
 		.then(salt => bcrypt.hash(plainPassword, salt))
-		.then(hashedPassword =>
-			// User.create({ username, email, password: hashedPassword, role, avatar })
-			User.create({ username, email, password: hashedPassword, avatar })
-		)
+		.then(hashedPassword => User.create({ username, email, password: hashedPassword, avatar }))
 		.then(() => res.redirect('/'))
 		.catch(error => next(error))
 })

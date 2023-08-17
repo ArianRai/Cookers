@@ -6,14 +6,11 @@ const fileUploader = require('../config/cloudinary.config')
 
 const { measureTypes, cuisineTypes, mealTypes } = require('../utils/const-utils')
 
-const axios = require('axios')
-
 router.get('/create', (req, res, next) => {
 	res.render('recipes/create-form', { measureTypes, cuisineTypes, mealTypes })
 })
 
 router.post('/create', fileUploader.single('image'), (req, res, next) => {
-	console.log(req.body)
 	const { name, food, quantity, measure, cuisineType, mealType, totalTime } = req.body
 	const { _id: user_id } = req.session.currentUser
 	const ingredients = []
@@ -25,8 +22,6 @@ router.post('/create', fileUploader.single('image'), (req, res, next) => {
 		food.forEach((elm, idx) => {
 			let ingredient = { quantity: quantity[idx], measure: measure[idx], food: elm }
 			ingredients.push(ingredient)
-			console.log(ingredient)
-			console.log(Object.values(ingredient).join(' '))
 			ingredientsLines.push(Object.values(ingredient).join(' '))
 		})
 	} else {
@@ -42,7 +37,7 @@ router.post('/create', fileUploader.single('image'), (req, res, next) => {
 		cuisineType,
 		mealType,
 		totalTime,
-		owner: user_id
+		owner: user_id,
 	}
 	Recipe.create(recipeInfo)
 		.then(recipeCreated => res.send(recipeCreated))
@@ -74,14 +69,14 @@ router.post('/list', (req, res, next) => {
 
 	recipesApi
 		.getRecipes(queries)
-		.then(response =>
+		.then(response => {
 			res.render('recipes/list-view', {
 				recipes: response.data.hits,
 				cuisineTypes,
 				mealTypes,
 			})
-		)
-		.catch(err => console.log(err))
+		})
+		.catch(err => next(err))
 })
 
 router.post('/details', (req, res, next) => {
@@ -116,7 +111,6 @@ router.post('/recipe-chef-details', (req, res, next) => {
 	Promise.all(promises).then(response => {
 		let user = response[0]
 		const isFavorite = user.favoritesFromChefs.includes(recipe_id)
-		console.log(isFavorite)
 		let recipe = response[1]
 		res.render('recipes/chef-recipe-details', { recipe, isFavorite })
 	})

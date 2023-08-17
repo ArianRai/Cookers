@@ -1,4 +1,5 @@
 const axios = require('axios')
+const { cuisineTypes } = require('../utils/const-utils')
 
 class RecipeApiHandler {
 	constructor() {
@@ -26,6 +27,15 @@ class RecipeApiHandler {
 
 	getOneRecipe(recipe_id) {
 		return this.axiosApp.get(`/${recipe_id}`)
+	}
+
+	getRandom() {
+		let randomValue = Math.floor(Math.random() * cuisineTypes.length)
+		const query = cuisineTypes[randomValue]
+		const searchParams = new URLSearchParams()
+
+		searchParams.append('cuisineType', query)
+		return this.axiosApp.get('?' + searchParams.toString())
 	}
 }
 

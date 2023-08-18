@@ -10,8 +10,8 @@
 					{{#each recipes}}
 					<li
 						class="list-group-item pt-3 d-flex justify-content-between align-items-baseline bg-transparent text-white fs-5 border-0">
-						<p>{{name}} - Chef: <a class="btn btn-light"
-								href="/user/details/{{owner._id}}/fromApi">{{owner.username}}</a></p>
+						<p>{{name}}: <a class="chef-name-link fs-6"
+								href="/user/details/{{owner._id}}/fromApi">{{owner.username}} Chef</a></p>
 						<div class="row me-2">
 							<div class="col">
 								<form action="/recipe/recipe-chef-details" method="POST">

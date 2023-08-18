@@ -135,7 +135,7 @@ border-bottom-left-radius: 10px;
 
 
 .list-view, .login-view, .list-favorites, .list-carrusel, .list-create, .recipes_view{
-	height:72avh;
+	height:72vh;
 	overflow: scroll;
 	padding: 2%;
 	background-color: rgba(25, 26, 25, 0.9);

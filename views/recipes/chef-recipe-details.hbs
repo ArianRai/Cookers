@@ -44,20 +44,20 @@
 					<div class="col">
 
 						<form action="/review/create/{{recipe._id}}" method="POST">
-							<label for="ratingInput">Rating</label>
-							<input type="number" name="rating" id="ratingInput" min="0" max="10">
-							<hr>
-							<label for="commentInput">Review</label><br>
-							<textarea name="comment" id="commentInput" cols="30" rows="3"></textarea>
-							<input type="submit" class="button-list-details border-0" value="Create Review">
-						</form>
+								<label for="ratingInput">Rating</label>
+								<input class="rounded" type="number" name="rating" id="ratingInput" min="0" max="10">
+								<hr>
+								<label for="commentInput">Review</label><br>
+								<textarea class="rounded" name="comment" id="commentInput" cols="50" rows="3"></textarea>
+								<input type="submit" class="button-list-details border-0" value="Create Review">
+							</form>
 						<div class="row my-3">
 							<p class="view_title_list">Reviews</p>
 							<ul class="list-rating">
 								{{#each reviews}}
 								<li>
 									<p class="rating fs-4">{{rating}}</p>
-									<p> {{comment}} - {{owner.username}}</p>
+									<p class="back-rating"> "{{comment}}" <br> <span class="">{{owner.username}}</span></p>
 								</li>
 								{{/each}}
 							</ul>

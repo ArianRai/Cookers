@@ -1,8 +1,8 @@
 <div class="container-fluid background-recipes p-layout">
-	<div class="container">
+	<div class="container-fluid view-recipes-margin">
 		<div class="row">
 			<div class="col-3">
-				<img src="{{recipe.image}}" alt="{{recipe.label}}">
+				<img class="img_recipes_api" src="{{recipe.image}}" alt="{{recipe.label}}">
 				{{#if isFavorite}}
 				<form action="/user/favorite/remove" method="POST">
 					<input type="text" name="recipe_uri" value="{{recipe.uri}}" hidden>
@@ -16,10 +16,12 @@
 				{{/if}}
 				<a href="/recipe/list" class="btn btn-dark mt-3">Search more recipes</a>
 			</div>
-			<div class="col">
+			<div class="col-8 recipes_view">
 				<div class="row flex-column">
-					<h2>{{recipe.label}}</h2>
-					<hr>
+					<div class="view_title_list">
+						<h4 class="view_title_list">{{recipe.label}}</h4>
+						<hr>
+					</div>
 					<p><strong>Calories/serving: </strong>{{calories}}</p>
 					<p><strong>Servings: </strong>{{recipe.yield}}</p>
 					<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
@@ -27,7 +29,7 @@
 						{{food}} |
 						{{/each}}
 					</p>
-					<h4>Ingredients</h4>
+					<h5 class="view_title_list">Ingredients</h5>
 					<div class="container">
 						<ul>
 							{{#each recipe.ingredientLines}}

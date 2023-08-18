@@ -24,7 +24,7 @@
 						<h4>{{recipe.name}}</h4>
 						<hr>
 					</div>
-					
+
 					<div class="col recipes-view">
 						<p><strong>Preparation time: </strong>{{recipe.totalTime}} min</p>
 						<p>{{#each recipe.ingredients}}
@@ -33,24 +33,24 @@
 						</p>
 						<h5 class="view_title_list">Ingredients</h5>
 
-							<ul>
-								{{#each recipe.ingredientsLines}}
-								<li>{{this}}</li>
-								{{/each}}
-							</ul>
-						
+						<ul>
+							{{#each recipe.ingredientsLines}}
+							<li>{{this}}</li>
+							{{/each}}
+						</ul>
+
 					</div>
 
 					<div class="col">
 
 						<form action="/review/create/{{recipe._id}}" method="POST">
-								<label for="ratingInput">Rating</label>
-								<input type="number" name="rating" id="ratingInput" min="0" max="10">
-								<hr>
-								<label for="commentInput">Review</label><br>
-								<textarea name="comment" id="commentInput" cols="30" rows="3"></textarea>
-								<input type="submit" class="button-list-details border-0" value="Create Review">
-							</form>
+							<label for="ratingInput">Rating</label>
+							<input type="number" name="rating" id="ratingInput" min="0" max="10">
+							<hr>
+							<label for="commentInput">Review</label><br>
+							<textarea name="comment" id="commentInput" cols="30" rows="3"></textarea>
+							<input type="submit" class="button-list-details border-0" value="Create Review">
+						</form>
 						<div class="row my-3">
 							<p class="view_title_list">Reviews</p>
 							<ul class="list-rating">
@@ -63,13 +63,9 @@
 							</ul>
 						</div>
 
-
 					</div>
-
-
-
 
 				</div>
 			</div>
 		</div>
-</div>
+	</div>

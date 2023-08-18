@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require('../models/User.model')
 const Recipe = require('../models/Recipe.model')
+const Review = require('../models/Review.model')
 const recipesApi = require('../services/recipe.service')
 const { isLoggedIn, checkRoles } = require('../middlewares/route-guard')
 const fileUploader = require('../config/cloudinary.config')
@@ -17,7 +18,8 @@ router.get('/list', (req, res, next) => {
 			if (req.session.currentUser) {
 				register = true
 			}
-			res.render('user/user-list', { users, register, allUsers, allChefs })
+			const info = { users, register, allUsers, allChefs }
+			res.render('user/user-list', info)
 		})
 		.catch(err => next(err))
 })
@@ -190,13 +192,17 @@ router.post('/chefs-favorite/:action', (req, res, next) => {
 		isFavorite = false
 	}
 
-	User.findByIdAndUpdate(user_id, updateData).then(() =>
-		Recipe.findById(recipe_id)
-			.then(recipe => {
-				res.render('recipes/chef-recipe-details', { recipe, isFavorite })
-			})
-			.catch(err => next(err))
-	)
+	const promises = [
+		User.findByIdAndUpdate(user_id, updateData),
+		Recipe.findById(recipe_id),
+		Review.find({ recipe_id }).populate('owner'),
+	]
+
+	Promise.all(promises)
+		.then(([user, recipe, reviews]) => {
+			res.render('recipes/chef-recipe-details', { recipe, reviews, isFavorite })
+		})
+		.catch(err => next(err))
 })
 
 module.exports = router

@@ -11,6 +11,7 @@ const measureTypes = [
 	'Cup',
 	'Tablespoon',
 	'Teaspoon',
+	'Unit(s)',
 ]
 
 const cuisineTypes = [

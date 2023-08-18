@@ -10,17 +10,16 @@ router.post('/create/:id', (req, res, next) => {
 
 	const reviewInfo = { rating, comment, recipeID, owner }
 
-	const promises = [
-		User.findById(owner),
-		Recipe.findById(recipeID),
-		Review.create(reviewInfo),
-		Review.find({ recipeID }).populate('owner'),
-	]
+	const promises = [User.findById(owner), Recipe.findById(recipeID), Review.create(reviewInfo)]
 
 	Promise.all(promises)
-		.then(([user, recipe, reviews]) => {
-			const isFavorite = user.favoritesFromChefs.includes(recipeID)
-			res.render('recipes/chef-recipe-details', { recipe, reviews, isFavorite })
+		.then(([user, recipe]) => {
+			Review.find({ recipeID })
+				.populate('owner')
+				.then(reviews => {
+					const isFavorite = user.favoritesFromChefs.includes(recipeID)
+					res.render('recipes/chef-recipe-details', { recipe, reviews, isFavorite })
+				})
 		})
 		.catch(err => next(err))
 })

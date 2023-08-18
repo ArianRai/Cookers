@@ -30,6 +30,7 @@ const recipeSchema = new Schema(
 						'Cup',
 						'Tablespoon',
 						'Teaspoon',
+						'Unit(s)',
 					],
 				},
 			},
